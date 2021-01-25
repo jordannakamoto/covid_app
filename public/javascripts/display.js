@@ -60,11 +60,9 @@ function answersToSubmission(){
       data : JSON.stringify(submission),
       dataType : 'json',
       success : function() {
-       console.log(data);
        console.log("posted to Google");
       },
       error : function(e) {
-        alert("Error!")
         console.log("ERROR: ", e);
       }
     });
@@ -305,10 +303,10 @@ function checkAnswers(){
   }
   if(flag != 0){
     showScreen("Failure");
-    success = "failed";
+    success = "Failed";
   }
   else{
     showScreen("Success");
-    success = "passed";
+    success = "Passed";
   }
 }
