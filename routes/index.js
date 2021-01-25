@@ -4,7 +4,7 @@ var sheet = require('../spreadsheet.js');
 
 /* GET home page. */
 router.get('/id?', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Daily Screening Tool' });
   console.log(req.query.name)
 });
 
