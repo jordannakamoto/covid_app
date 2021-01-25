@@ -1,0 +1,56 @@
+extends layout
+link(rel='preconnect' href='https://fonts.gstatic.com')
+link(href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap' rel='stylesheet')
+block content
+    #welcome.welcome_screen
+      h2
+      p
+      .answer
+        button.start_btn.btn.green_btn
+          | Start
+    #1.item.inactive.unanswered
+      .question
+        h2
+        p
+      .answer
+        button.yes_btn.btn Yes
+        button.no_btn.btn No
+    #2.item.inactive.unanswered
+      .question
+        h2
+        p
+      .answer
+        button.yes_btn.btn Yes
+        button.no_btn.btn No
+    #3.item.inactive.unanswered
+      .question
+        h2
+        img
+      .answer
+        button.yes_btn.btn Yes
+        button.no_btn.btn No
+    #4.item.inactive.unanswered
+      .question
+        h2
+      .answer
+    #success.result_screen
+      h2
+      img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Eo_circle_light-green_checkmark.svg/512px-Eo_circle_light-green_checkmark.svg.png' width='50px')
+      p
+      span
+    #failure_1.result_screen
+      h2
+      p
+    #failure_2.result_screen
+      h2
+      p
+    #results_div
+      span(id='#results')
+        | Results:
+    #footer
+      button.back_btn.inactive ∧
+      span#progress
+      button.forward_btn.inactive ∨
+      select#language
+        option(value='”english”') English
+        option(value='”spanish”') Spanish
