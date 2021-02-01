@@ -1,3 +1,11 @@
+const mongoose = require('mongoose');
+const session = require('express-session');
+var passport = require('passport');
+var crypto = require('crypto');
+const connection = require('./config/database');
+
+const MongoStore= require('connect-mongo')(session);
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -5,10 +13,35 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var adminRouter = require('./routes/admin');
 
 var app = express();
 global.__basedir = __dirname;
+
+// session setup
+const sessionStore = new MongoStore({ mongooseConnection: connection, collection: "sessions" });
+
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: sessionStore,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}));
+
+// passport authentication
+require('./config/passport');
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use((req, res, next) => {
+    console.log(req.session);
+    console.log(req.user);
+    next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,7 +54,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

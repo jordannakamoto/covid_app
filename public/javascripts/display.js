@@ -24,16 +24,22 @@ var submission = {}
 initUserTime();
 
 function initUserTime(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var namestr = urlParams.get('name');
     
-    var separator = namestr.indexOf('_');
-    userFirst = namestr.substr(0,separator);
-    userFirst = userFirst.charAt(0).toUpperCase()+ userFirst.slice(1);
-    
-    userLast = namestr.substr(separator+1,namestr.length);
-    userLast = userLast.charAt(0).toUpperCase()+ userLast.slice(1);
+   $.ajax({
+      type : "GET",
+      contentType : "application/json",
+      url : "/user",
+      dataType : 'json',
+      success : function(data) {
+       console.log(data);
+       userFirst = data.name["First"];
+       userLast = data.name["Last"];
+       setLanguage(data.language); // load the text data after userName has been set
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+      }
+    });
     
     formatted_date = date.toLocaleString('en-us', {weekday:'long'}) + " " + (date.getMonth() + 1) + "/" + date.getDate();
     var ampm = date.getHours() >= 12 ? 'pm' : 'am';
@@ -53,10 +59,11 @@ function answersToSubmission(){
       submission["Question "+(i+1)] = answers[i];
     }
     
+    // Post to Google
     $.ajax({
       type : "POST",
       contentType : "application/json",
-      url : "/test",
+      url : "/toGoogle",
       data : JSON.stringify(submission),
       dataType : 'json',
       success : function() {
@@ -97,12 +104,6 @@ var SpanishData = {
   "Failure2": {"Title":"Parece que tendrá que poner en cuarentena durante las próximas 2 semanas.","Description":" Envíe un mensaje de texto a su gerente para informarle que no puede venir a trabajar hoy. Recursos Humanos se comunicará con usted para discutir los próximos pasos."}
 }
 
-document.cookie = "language=English";
-
-var cookie = document.cookie;
-
-setLanguage("English");
-
 $("#language").change(function(){
   setLanguage($("#language option:selected").text());
 })
@@ -110,10 +111,15 @@ $("#language").change(function(){
 function setLanguage(language){
   if(language == "English"){
     data = EnglishData;
+    $("#language").val("english");
   }
   else if(language == "Spanish"){
     data = SpanishData;
+    $("#language").val("spanish");
   }
+  
+  changeUserLanguage(language);
+  
     $("#welcome h2").text(data.Welcome.Title.replace ("%userFirst", userFirst));
     $("#welcome p").text(data.Welcome.Description);
     $("#1 h2").text(data.Question1.Title);
@@ -131,7 +137,7 @@ function setLanguage(language){
       if(option == 0 || option == 1){
         newElement = newElement.replace('class="','class="invalid ')
       }
-      $("#4 .answer").append(newElement);
+      $("#4 .answer_multiple").append(newElement);
     }
       init_choice_btns();
       $("#success h2").text(data.Success.Title);
@@ -263,7 +269,7 @@ function update(){
 
 function createSubmitButton(){
   if($(".submit_btn").length < 1){
-  $("#"+total_questions).append('<button class="submit_btn btn green_btn">Submit</button>');
+  $("#submit").append('<button class="submit_btn btn green_btn">Submit</button>');
   $(".submit_btn").click(function(){
     $("#" + items.length).addClass("inactive");
     $(".back_btn").addClass("inactive");
@@ -309,4 +315,21 @@ function checkAnswers(){
     showScreen("Success");
     success = "Passed";
   }
+}
+
+function changeUserLanguage(_lang) {
+        // Change Language of User
+    var test = {"language": _lang};
+    $.ajax({
+      type : "POST",
+      contentType : "application/json",
+      url : "/changelanguage",
+      data : JSON.stringify(test),
+      dataType : 'json',
+      success : function() {
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+      }
+    });
 }
