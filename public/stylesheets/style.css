@@ -10,7 +10,7 @@ body{
   position: absolute;
   width: 100vw;
   height: 80vh;
-  top: 10vh;
+  top: 0;
   right: 0;
   bottom: 0;
   left: 0;
@@ -38,7 +38,7 @@ body{
 /* high resolution mobile display */
 @media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){
   body{
-  width: 95%;
+  width: 90%;
   margin-top: 20px;
   }
   .question img{
@@ -200,6 +200,7 @@ h2{
   }
 
 #success {
+    margin-top: 10vh;
   color: white;
 }
 
