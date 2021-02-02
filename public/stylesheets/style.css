@@ -39,7 +39,7 @@ body{
 @media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){
   body{
   width: 90%;
-  margin-top: 20px;
+  margin-top: 10vh;
   }
   .question img{
   width: 100% !important;
@@ -200,7 +200,7 @@ h2{
   }
 
 #success {
-    margin-top: 10vh;
+    margin-top: 10vh;   
   color: white;
 }
 
