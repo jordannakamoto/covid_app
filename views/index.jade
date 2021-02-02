@@ -1,10 +1,12 @@
 extends layout
 block content
+    #success_gradient
     #welcome.welcome_screen
+      img(src='https://making-waves.org/wp-content/uploads/2017/07/MakingWavesAcademy_boldtypea-289x300.jpg')
       h2
       p
       .answer.active
-        button.start_btn.btn.green_btn
+        button.start_btn.btn
           | Start
     #1.item.inactive.unanswered
       .question
@@ -32,9 +34,10 @@ block content
         h2
       .answer_multiple
       #submit
+      img#distancing(src='https://i.ibb.co/bPH41Pt/testgraphic.png')
     #success.result_screen
       h2
-      img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Eo_circle_light-green_checkmark.svg/512px-Eo_circle_light-green_checkmark.svg.png' width='50px')
+      img(src='https://i.ibb.co/y073Rvx/tick-inside-circle-1.png' width='100px')
       p
       span
     #failure_1.result_screen
@@ -54,8 +57,9 @@ block content
       button.back_btn.inactive ∧
       button.forward_btn.inactive ∨
       select#language
-        option(value='”english”') English
-        option(value='”spanish”') Spanish
+        option(value='english') English
+        option(value='spanish') Spanish
+
 
 block scripts        
     script(type='text/javascript' src='/javascripts/display.js')

@@ -9,17 +9,18 @@ const connection = mongoose.createConnection(conn, {
     useUnifiedTopology: true
 });
 
-// UserSchema
+// UserSchemag
 const UserSchema = new mongoose.Schema({
-    // access level stored in admin/manager list object
     username: String,
     name: Object, // first and last name keys
     language: String, // user can set language English/Spanish
     hash: String,
     salt: String,
+    phone: String,
     
     isActive: Boolean,
     group: String,
+    accessLevel: String,
     Schedule: {  // store time as float
         Mon: 0.0,
         Tue: 0.0,

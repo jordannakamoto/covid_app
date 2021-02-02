@@ -20,6 +20,8 @@ var success = "unfinished";
 var submitted = false;
 
 var submission = {}
+var transitionTime = 150;
+
 
 initUserTime();
 
@@ -154,9 +156,11 @@ function setLanguage(language){
 
 $(".start_btn").click(function() {
   var domObject = items[current_question - 1];
-  $(domObject).removeClass("inactive");
-  $(domObject).addClass("active");
-  $("#welcome").hide();
+  setTimeout(function(){
+    $(domObject).removeClass("inactive");
+    $(domObject).addClass("active");
+    $("#welcome").hide();
+  },transitionTime);
   update();
 })
 
@@ -240,18 +244,23 @@ function goTo_next(current, next){
 };
 
 function update(){
-  $("#progress").text(current_question + "/" + total_questions)
-  if(current_question > 1 && submitted == false){
-    $('.back_btn').addClass("active");
-    $('.back_btn').removeClass("inactive")
+ setTimeout(function(){
+   var percent = (answers.length) / total_questions * 100;
+   if(current_question <= answers.length){
+      percent = current_question / total_questions * 100;}
+   $(".progress-bar").css("width", percent +"%");
+   $("#progress").text(current_question + "/" + total_questions);
+   if(current_question > 1 && submitted == false){
+     $('.back_btn').addClass("active");
+     $('.back_btn').removeClass("inactive")
   }
   else{
-    $('.back_btn').removeClass("active");
-    $('.back_btn').addClass("inactive")
+     $('.back_btn').removeClass("active");
+     $('.back_btn').addClass("inactive")
   }
   if(current_question < answers.length + 1 && current_question != items.length){
-    $('.forward_btn').addClass("active");
-    $('.forward_btn').removeClass("inactive")
+     $('.forward_btn').addClass("active");
+     $('.forward_btn').removeClass("inactive")
   }
   else{
     $('.forward_btn').removeClass("active");
@@ -260,23 +269,26 @@ function update(){
   
   if(current_question == total_questions && answers.length == total_questions){
     createSubmitButton();
-}
+    $(".progress-bar").css("width", "100%");
+  }
   
-    $(".active").fadeIn(500);
-    $(".inactive").hide();
-  
+  $(".active").fadeIn(300);
+  $(".inactive").hide();
+ }, transitionTime) 
 }
 
 function createSubmitButton(){
   if($(".submit_btn").length < 1){
   $("#submit").append('<button class="submit_btn btn green_btn">Submit</button>');
   $(".submit_btn").click(function(){
-    $("#" + items.length).addClass("inactive");
-    $(".back_btn").addClass("inactive");
-    $(".inactive").hide();
-    checkAnswers();
-    submitted = true;
-    answersToSubmission();
+    setTimeout(function(){
+      $("#" + items.length).addClass("inactive");
+      $(".back_btn").addClass("inactive");
+      $(".inactive").hide();
+      checkAnswers();
+      submitted = true;
+      answersToSubmission();
+    },transitionTime);
   })
   }
 }
@@ -288,6 +300,7 @@ for (i = 1; i <= total_questions; i++){
 
 function showScreen(screen){
   if (screen == "Success"){
+     $('#success_gradient').css("opacity", ".7");
     $("#success span").text(formatted_date);
     $("#success").fadeIn(500);
   }
