@@ -1,60 +1,61 @@
 extends layout
 block content
     #welcome.welcome_screen
-  h2
-  p
-  .answer.active
-    button.start_btn.btn.green_btn
-      | Start
-#1.item.inactive.unanswered
-  .question
-    h2
-    p
-  .answer
-    button.yes_btn.btn Yes
-    button.no_btn.btn No
-#2.item.inactive.unanswered
-  .question
-    h2
-    p
-  .answer
-    button.yes_btn.btn Yes
-    button.no_btn.btn No
-#3.item.inactive.unanswered
-  .question
-    h2
-    img
-  .answer
-    button.yes_btn.btn Yes
-    button.no_btn.btn No
-#4.item.inactive.unanswered
-  .question
-    h2
-  .answer_multiple
-  #submit
-#success.result_screen
-  h2
-  img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Eo_circle_light-green_checkmark.svg/512px-Eo_circle_light-green_checkmark.svg.png' width='50px')
-  p
-  span
-#failure_1.result_screen
-  h2
-  p
-#failure_2.result_screen
-  h2
-  p
-#results_div
-  span(id='#results')
-    | Results:
-.container
-  span#progress
-  .progress
-    .progress-bar
-#footer
-  button.back_btn.inactive ∧
-  button.forward_btn.inactive ∨
-  select#language
-    option(value='”english”') English
-    option(value='”spanish”') Spanish
+      h2
+      p
+      .answer.active
+        button.start_btn.btn.green_btn
+          | Start
+    #1.item.inactive.unanswered
+      .question
+        h2
+        p
+      .answer
+        button.yes_btn.btn Yes
+        button.no_btn.btn No
+    #2.item.inactive.unanswered
+      .question
+        h2
+        p
+      .answer
+        button.yes_btn.btn Yes
+        button.no_btn.btn No
+    #3.item.inactive.unanswered
+      .question
+        h2
+        img
+      .answer
+        button.yes_btn.btn Yes
+        button.no_btn.btn No
+    #4.item.inactive.unanswered
+      .question
+        h2
+      .answer_multiple
+      #submit
+    #success.result_screen
+      h2
+      img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Eo_circle_light-green_checkmark.svg/512px-Eo_circle_light-green_checkmark.svg.png' width='50px')
+      p
+      span
+    #failure_1.result_screen
+      h2
+      p
+    #failure_2.result_screen
+      h2
+      p
+    #results_div
+      span(id='#results')
+        | Results:
+    .container
+      span#progress
+      .progress
+        .progress-bar
+    #footer
+      button.back_btn.inactive ∧
+      button.forward_btn.inactive ∨
+      select#language
+        option(value='”english”') English
+        option(value='”spanish”') Spanish
+
 block scripts        
     script(type='text/javascript' src='/javascripts/display.js')
