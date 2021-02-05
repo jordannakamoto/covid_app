@@ -1,9 +1,1 @@
-{"template":{"First":"firstname","Last":"lastname"},
-
-"edna": {"First": "Edna", "Last": "Nakamoto"},
-"jordan": {"First": "Jordan", "Last": "Nakamoto"},
-"liz": {"First": "Elizabeth", "Last": "Martinez"},
-"fe": {"First": "Fe", "Last": "Campbell"},
-"paula": {"First": "Paula", "Last": "Brannon"}
-
-}
+{"template":{"First":"firstname","Last":"lastname"},"edna":{"First":"Edna","Last":"Nakamoto"},"liz":{"First":"Elizabeth","Last":"Martinez"},"fe":{"First":"Fe","Last":"Campbell"},"paula":{"First":"Paula","Last":"Brannon"}}
