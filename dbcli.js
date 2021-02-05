@@ -10,4 +10,13 @@ program
         console.log("All Users deleted from connected database");
     });
     
-    program.parse(process.argv);
+program
+    .command('clear alerts')
+    .alias('ca')
+    .description('Clears Alerts collection')
+    .action(() =>{
+        connection.collections.alerts.deleteMany({});
+        console.log("All Alerts deleted from connected database");
+    });
+    
+ program.parse(process.argv);

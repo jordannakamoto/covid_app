@@ -1,0 +1,141 @@
+/* admin_home.css*/
+
+html{
+  height: 100%;
+}
+
+body {
+  background: #eee;
+  margin: 0;
+  font-family: Sans-Serif;
+  height: 100%;
+}
+#parent-container{
+  height: 100%;
+}
+
+#navigation-area{
+  background: white;
+  height: 100%;
+  width: 160px;
+  float: left;
+  padding: 20px;
+  padding-top: 60px;
+  padding-left: 60px;
+  margin-right: 120px;
+}
+
+#nav-menu{
+  border-left: solid 3px #D5ECFF;
+  list-style: none;
+}
+
+#nav-menu span{
+  position: relative;
+  right: 20px;
+  top: -20px;
+  font-weight: bold;
+  
+}
+
+#nav-menu li{
+  margin-bottom: 1em;
+}
+
+#nav-menu li a{
+  color: grey;
+  text-decoration: none;
+}
+#nav-menu li a:hover{
+  color: blue;
+  cursor: pointer;
+  transition: color .3s;
+}
+
+/* Dash Panel */
+
+#dash-panel{
+  margin-top: 100px;
+  width: 920px;
+  height: 320px;
+  float: left;
+  display: flex;
+}
+
+#dash-table{
+  float: left;
+  width: 920px;
+  color: #4f4f4f;
+}
+
+#dash-panel .item{
+  float: left;
+  width: 100%;
+  height: 200px;
+  margin: 2vw;
+  box-shadow:0 5px 15px -10px rgba(0,0,0,1);
+  border-radius: 4px;
+  position: relative;
+  transition: transform .3s;
+}
+
+#dash-panel .item:hover{
+  transform:scale(1.06);
+  cursor: pointer;
+}
+#alerts-widget{
+  background-color: #abe9cd;
+background-image: linear-gradient(315deg, #abe9cd 0%, #3eadcf 74%);
+  color: white;
+}
+
+#alerts-widget.no-new{
+  background: none !important;
+  color: lightgrey;
+  box-sizing: border-box;
+  border: solid 3px lightgrey;
+  box-shadow: none;
+}
+.are-pending{
+  color: blue;
+  opacity: .6 !important;
+}
+
+#completion-widget{
+  background-color: #ffffff;
+background-image: linear-gradient(315deg, #ffffff 0%, #eee 74%);
+  color: grey;
+}
+#visitor-widget{
+  background-color: #b0b0b0;
+  color: grey;
+}
+
+.widget-big-num{
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  font-size: 70px;
+}
+
+.widget-med-num{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 30px;
+}
+
+
+.widget-med-text{
+  position: absolute;
+  top: 35px;
+  left: 70px;
+  font-size: 30px;
+}
+
+.widget-sub-text{
+  position: absolute;
+  bottom: 40px;
+  right: 20px;
+  opacity: .7;
+}

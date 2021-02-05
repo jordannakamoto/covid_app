@@ -1,0 +1,7 @@
+#nav-menu li a:visited{
+  color: grey;
+}
+
+a:-webkit-any-link {
+    text-decoration: none;
+}

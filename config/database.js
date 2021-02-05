@@ -17,21 +17,39 @@ const UserSchema = new mongoose.Schema({
     hash: String,
     salt: String,
     phone: String,
+    email: String,
+    vacURL: String,      // link to vac document
     
-    isActive: Boolean,
+    state: String,         // has the person taken the survey today
+    
+    activity: String,     // is the person working from home, in quarantine, needs vaccination etc.
     group: String,
     accessLevel: String,
     Schedule: {  // store time as float
-        Mon: 0.0,
-        Tue: 0.0,
-        Wed: 0.0,
-        Thu: 0.0,
-        Fri: 0.0,
-        Sat: 0.0,
-        Sun: 0.0
-    }
+        Mon: {"start": 0, "end": 0},
+        Tue: {"start": 0, "end": 0},
+        Wed: {"start": 0, "end": 0},
+        Thu: {"start": 0, "end": 0},
+        Fri: {"start": 0, "end": 0},
+        Sat: {"start": 0, "end": 0},
+        Sun: {"start": 0, "end": 0}
+    },
+    title: String
+});
+
+// https://alexanderzeitler.com/articles/mongoose-referencing-schema-in-properties-and-arrays/
+const AlertSchema = new mongoose.Schema({
+    msg: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    date: String,
+    note: String,
+    state: String             // new, in-progress, completed
 });
 
 const User = connection.model('User', UserSchema);
+const Alert = connection.model('Alert', AlertSchema);
 
 module.exports = connection;

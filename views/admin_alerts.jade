@@ -1,0 +1,49 @@
+extends layout
+block css
+    link(rel='stylesheet', href='/stylesheets/admin.css')
+    link(rel='stylesheet', href='/stylesheets/admin_alerts.css')
+block content
+  #parent-container
+      #misc
+      #navigation-area
+        ul#nav-menu
+          span Navigation
+          li
+           a(href='/admin') Home
+          li
+            a(href='/admin/alerts') Alerts
+          li
+            a(href='/admin/users') Users
+          li
+            a(href='https://docs.google.com/spreadsheets/d/1yJWURjN98gjpeAfh9GAb1UTLecJh2kmIHof3m946Jvw/edit?usp=sharing' target='_blank')  Sheet 
+          li 
+            a Drive
+      #slider-panel
+        #move-btn-anchor
+          #move-btn 🡆
+        #slider-nav
+          ul
+            li#new_btn.slider-tab.active New
+            li#inprogress_btn.slider-tab In-Progress
+            li#completed_btn.slider-tab Completed
+        #slider.swipe
+          .swipe-wrap
+            #table-new.alerts-table
+            #table-inprogress.alerts-table
+            #table-completed.alerts-table
+      #right-bar
+        #search-area
+          input#search-input(placeholder='Search Alerts')
+          img.search-icon(src='http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png' width='48')
+        #note-area
+          | Note:
+          textarea#note
+        #actions-area
+          span Actions
+          ul#actions-history
+            li Gordon Nikimutu: Moved > In-Progress
+            li Gordon Nikimutu: Moved > Completed
+
+block scripts
+    script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/swipe/2.0.0/swipe.min.js')
+    script(type='text/javascript' src='/javascripts/alert.js')

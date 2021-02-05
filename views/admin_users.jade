@@ -1,0 +1,116 @@
+extends layout
+block css
+    link(rel='stylesheet', href='/stylesheets/admin.css')
+    link(rel='stylesheet', href='/stylesheets/admin_users.css')
+block content
+    #parent-container
+      #misc
+        #user_saved
+          .exit_user_saved
+          .small-circle
+          | User Saved
+      #navigation-area
+        ul#nav-menu
+          span Navigation
+          li
+           a(href='/admin') Home
+          li
+            a(href='/admin/alerts') Alerts
+          li
+            a(href='/admin/users') Users
+          li
+            a(href='https://docs.google.com/spreadsheets/d/1yJWURjN98gjpeAfh9GAb1UTLecJh2kmIHof3m946Jvw/edit?usp=sharing' target='_blank')  Sheet 
+          li Drive
+      #profile-card
+        .flex-container.heading
+          div(id='employee-info flex-item')
+            h2#fullname Gordon Nikimutu
+            span#email gnikimutu@gmail.com
+            br
+            span#phone 123-410-2923
+          .flex-item(style='text-align: right')
+            span.activity-label On Campus
+            br
+            span.state-label Passed
+        hr
+        #schedule-container.flex-container
+          .flex-item
+            .schedule
+              .section-heading Schedule
+              .flex-schedule
+                .schedule-segment
+                  .schedule-day(style='border-top: solid 1px lightgrey') Monday
+                  input#mon-s.schedule-start(style='border-top: solid 1px lightgrey')
+                  input#mon-e.schedule-end(style='border-top: solid 1px lightgrey')
+                .schedule-segment
+                  .schedule-day Tuesday
+                  input#tue-s.schedule-start
+                  input#tue-e.schedule-end
+                .schedule-segment
+                  .schedule-day Wednesday
+                  input#wed-s.schedule-start
+                  input#wed-e.schedule-end
+                .schedule-segment
+                  .schedule-day Thursday
+                  input#thu-s.schedule-start
+                  input#thu-e.schedule-end
+                .schedule-segment
+                  .schedule-day Friday
+                  input#fri-s.schedule-start
+                  input#fri-e.schedule-end
+                .schedule-segment
+                  .schedule-day Saturday
+                  input#sat-s.schedule-start
+                  input#sat-e.schedule-end
+                .schedule-segment
+                  .schedule-day Sunday
+                  input#sun-s.schedule-start(value='9')
+                  input#sun-e.schedule-end(value='5')
+            .attributes-list
+          .flex-item
+            #data-listing
+              br
+              ul
+                li
+                  span.data-label username: 
+                  span#field_username
+                li
+                  span.data-label group: 
+                  span#field_group
+                  br
+                li
+                  span.data-label vaccination doc: 
+                  #docIcon-anchor
+                    img#field_vacDoc(src='http://icons.iconarchive.com/icons/papirus-team/papirus-apps/512/google-docs-icon.png' width='24')
+                br
+                br
+                li
+                  span note:
+                  br
+                  textarea#user_note
+        #alert-history
+          .section-heading Alert History
+          ul
+            li.alert-urgent 2/15 - Covid Signs reported
+            li 2/14 - Did not complete DST
+            li 2/13 - Did not complete DST
+            li 2/13 - Did not complete DST
+            li 2/13 - Did not complete DST
+            li 2/13 - Did not complete DST
+            li 2/13 - Did not complete DST
+      #right-bar
+        #search-area
+          input#search-input(placeholder='Search Users')
+          img.search-icon(src='http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png' width='48')
+          button.user-menu-option  > Create New User
+          button.user-menu-option  > Delete This User
+        #actions-area
+          #submit_btn_anchor
+            button#submit_changes_btn > Save Changes
+          span Actions
+          ul#actions-history
+            li User: Bailey Deleted
+            li User: Gordon Nikimutu Edited
+
+block scripts
+   script(type='text/javascript' src='/javascripts/user.js')

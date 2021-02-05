@@ -1,5 +1,5 @@
 // register.js
-$('#register_btn').click( function(){
+$('.submit').click( function(){
         var form = $('#register_form');
         var username = $('#register_name').val();
         var password = $('#register_password').val();

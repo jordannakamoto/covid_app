@@ -33,7 +33,6 @@ function initUserTime(){
       url : "/user",
       dataType : 'json',
       success : function(data) {
-       console.log(data);
        userFirst = data.name["First"];
        userLast = data.name["Last"];
        setLanguage(data.language); // load the text data after userName has been set
@@ -80,7 +79,7 @@ function answersToSubmission(){
 
 
 var EnglishData = {
-  "Welcome": {"Title": "Welcome %userFirst to The HR Manager daily employee wellness screen",
+  "Welcome": {"Title": "Welcome %userFirst to The Making Waves Academy daily employee wellness screen",
               "Description": "You must complete this survey before leaving your home to report for work. Your answers will be used to determine if you are clear to work for the day.",},
   "Confirmation": {"Title": "Please enter your Employee ID Number below:"},
   "Question1": {"Title": "Take your temperature using the company provided thermometer.", "Description":"Is your temperature at or above 100.4 F?"},
@@ -305,6 +304,7 @@ function showScreen(screen){
     $("#success").fadeIn(500);
   }
   else if (screen == "Failure"){
+    postAlert();
     if(flag == 4){ // If exposure has been reported on question 4
     $("#failure_2").fadeIn(500);
     }
@@ -330,14 +330,33 @@ function checkAnswers(){
   }
 }
 
+// Change Language of User
 function changeUserLanguage(_lang) {
-        // Change Language of User
-    var test = {"language": _lang};
+    var obj = {"language": _lang};
     $.ajax({
       type : "POST",
       contentType : "application/json",
       url : "/changelanguage",
-      data : JSON.stringify(test),
+      data : JSON.stringify(obj),
+      dataType : 'json',
+      success : function() {
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+      }
+    });
+}
+
+function postAlert() {
+        // Change Language of User
+    var obj = {
+                    "date": formatted_date
+    };
+    $.ajax({
+      type : "POST",
+      contentType : "application/json",
+      url : "/newAlert",
+      data : JSON.stringify(obj),
       dataType : 'json',
       success : function() {
       },

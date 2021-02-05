@@ -2,6 +2,7 @@ const passport = require('passport');
 const genPassword = require('../lib/passwordUtils').genPassword;
 const connection = require('../config/database');
 const User = connection.models.User;
+const Alert = connection.models.Alert;
 const nameList = require('../lists/namelist.js');
 
 var express = require('express');
@@ -77,6 +78,10 @@ router.get('/login', function(req,res,next){
 
 // render /dst page for questionnaire
 router.get('/dst', function(req, res, next) {
+    // initial terms and conditions
+   if(req.user.state == "new"){
+       res.send("blah blah blah");
+   }
   res.render('index', { title: 'Daily Screening Tool' });
 });
 
@@ -100,6 +105,22 @@ router.post('/changelanguage', function(req,res){
     
 });
 
+// Post alert to database
+// requires name and date parameters
+router.post('/newAlert', function (req,res,next){
+    User.findOne({ "_id": req.user._id})
+                .then((user) => {
+                    var foo = new Alert({
+                        msg: "Covid Signs",
+                        user: user._id,
+                        date: req.body.date,
+                        state: "new"
+                    })
+                    foo.save();
+                    console.log(foo);
+    });
+});
+
 // Post completed form data to Google Sheets
 router.post('/toGoogle', function(req, res) {
   var row = req.body
@@ -112,6 +133,8 @@ function createUser(req, name, hash, salt){
                     name: name,
                     language: "English",
                     hash: hash,
+                    state: "new", 
+                    phone: "123-456-7891",
                     salt: salt,
                     isActive: true,
                     group: "unassigned",

@@ -1,21 +1,29 @@
 extends layout
+block css
+    link(rel='stylesheet', href='/stylesheets/register.css')
 
 block content
-    #login
+    .form
         form(method="POST" action="" id="register_form")
-              #login_logo
-                    img(src='https://static.wixstatic.com/media/5ed204_3436467ac2904b6ba6782294f20abbae~mv2.png/v1/fill/w_309,h_72,al_c,q_85,usm_0.66_1.00_0.01/5ed204_3436467ac2904b6ba6782294f20abbae~mv2.webp')
-              .login_field
-                    span Username:
-                    input#register_name(type="text" name="uname" placeholder='email@address.com')
-              .login_field
-                    span Password:
-                    input(type="password" name="pw" id="register_password")
-              .login_field
-                    span Confirm Password:
-                    input(type="password" id="register_confirmpassword")
-              button(type='submit' id="register_btn") Register
-              #message
+              .title Welcome
+              .subtitle Let's create your account!
+              // #login_logo
+                    // img(src='https://static.wixstatic.com/media/5ed204_3436467ac2904b6ba6782294f20abbae~mv2.png/v1/fill/w_309,h_72,al_c,q_85,usm_0.66_1.00_0.01/5ed204_3436467ac2904b6ba6782294f20abbae~mv2.webp')
+            .input-container.ic1
+              input#register_name.input(type='text' placeholder=' ')
+              .cut
+              label.placeholder(for='firstname') Username
+            .input-container.ic2
+              input#register_password.input(type='password' placeholder=' ')
+              .cut
+              label.placeholder(for='lastname') Password
+            .input-container.ic2
+              input#register_confirmpassword.input(type='password' placeholder=' ')
+              .cut.cut-long
+              label.placeholder(for='email')
+                | Confirm Password
+              button(type='submit').submit Register
+         #message
         
 block scripts
     script(type='text/javascript' src='/javascripts/register.js')
