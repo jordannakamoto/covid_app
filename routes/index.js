@@ -78,10 +78,10 @@ router.get('/login', function(req,res,next){
 
 // render /dst page for questionnaire
 router.get('/dst', function(req, res, next) {
-    // initial terms and conditions
-   if(req.user.state == "new"){
-       res.send("blah blah blah");
-   }
+    // initial terms an 
+   // if(req.user.state == "new"){
+       // res.send("blah blah blah");
+   // }
   res.render('index', { title: 'Daily Screening Tool' });
 });
 
