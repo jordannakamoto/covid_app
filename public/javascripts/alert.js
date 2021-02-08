@@ -123,7 +123,8 @@ $(".move-btn").mouseover(function(){
 });
 
 function setMouseOver(){
-      $(".alert").mouseover(function(){
+      $(".alert").off("mouseover");
+      $(".alert").on("mouseover", function(){
       $(this).find('.move-btn').show(); 
       $(this).addClass("alert-hovered")
       selectedAlert = $(this);
@@ -180,7 +181,7 @@ $(".move-btn").click(function(){
     $('.alert').removeClass("alert-hovered")
 })
 
-}, 300);
+}, 1000);
 
 function setupSlider(){
     window.slider = new Swipe(document.getElementById('slider'), {
