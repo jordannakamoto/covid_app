@@ -5,6 +5,7 @@ var crypto = require('crypto');
 const connection = require('./config/database');
 const schedule = require('node-schedule');
 const User = connection.models.User;
+const sUtil = require('./lib/scheduleUtil.js');
 
 const MongoStore= require('connect-mongo')(session);
 
@@ -24,34 +25,13 @@ global.__basedir = __dirname;
 const sessionStore = new MongoStore({ mongooseConnection: connection, collection: "sessions" });
 
 
-// setup midnight event
-// const job = schedule.scheduleJob('0 0 * * *', () => {
-    // var today = new Date().getDay();
+//setup midnight event
+const job = schedule.scheduleJob('0 0 * * *', () => {
+    var today = new Date().getDay();
 
-    // var result = [];
-    // if(today == '1'){
-        // User.find({'Schedule.M': true})
-            // .then((users) => {
-                // testfn(users);
-            // });
-    // }
-    // else if(today=='2'){User.find({'Schedule.T':true}).then((users)=>{testfn(users)});}
-    // else if(today=='3'){User.find({'Schedule.W':true}).then((users)=>{testfn(users)});}
-    // else if(today=='4'){User.find({'Schedule.Th':true}).then((users)=>{testfn(users)});}
-    // else if(today=='5'){User.find({'Schedule.F':true}).then((users)=>{testfn(users)});}
-    // else if(today=='6'){User.find({'Schedule.S':true}).then((users)=>{testfn(users)});}
-    // else if(today=='7'){User.find({'Schedule.Su':true}).then((users)=>{
-        // testfn(users)});}
+    sUtil.setExpected();
 
-    // function testfn(prom){
-        // for(i = 0; i < prom.length; i++){
-            // prom[i].state = "expected";
-            // prom[i].save();
-        // }
-    // }
-
-// }) // run everyday at midnight
-
+})
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
