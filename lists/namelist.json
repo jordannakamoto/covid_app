@@ -1,1 +1,4 @@
-{"template":{"First":"firstname","Last":"lastname"},"edna":{"First":"Edna","Last":"Nakamoto"},"liz":{"First":"Elizabeth","Last":"Martinez"},"fe":{"First":"Fe","Last":"Campbell"},"paula":{"First":"Paula","Last":"Brannon"}}
+{
+    "registration": [],
+    "password-reset": []
+}

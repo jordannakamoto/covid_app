@@ -23,17 +23,19 @@ function populateAlerts(){
             var date = elem.date;
             newAlerts.push(elem);
             
-            htmlStr = '<div data-id="'+i+'" class="alert">';
+            htmlStr = '<div data-id="'+elem._id+'" class="alert">';
             if (date == formatted_date){
                 htmlStr += '\t<div class="alert-date today">Today</div>'
             }
             else
                 htmlStr += '\t<div class="alert-date">' + date + '</div>'
             htmlStr += elem.user.name.First + " " + elem.user.name.Last + ' | '
-            htmlStr += elem.user.phone + '</div>'
+            htmlStr += elem.user.phone
+            htmlStr += '<div  class="move-btn">🡆</div></div>'
             $("#table-new").append(htmlStr);
         }
         setupSlider();
+        refreshCount();
       },
       error : function(e) {
         console.log("ERROR: ", e);
@@ -48,18 +50,21 @@ function populateAlerts(){
       success : function(data) {
          for(i = 0; i < data.length; i++){
             var elem = data[i];
+            var date = elem.date;
             inprogressAlerts.push(elem);
             
-            htmlStr = '<div data-id="'+i+'" class="alert">';
+            htmlStr = '<div data-id="'+elem._id+'" class="alert">';
             if (date == formatted_date){
                 htmlStr += '\t<div class="alert-date today">Today</div>'
             }
             else
                 htmlStr += '\t<div class="alert-date">' + date + '</div>'
             htmlStr += elem.user.name.First + " " + elem.user.name.Last + ' | '
-            htmlStr += elem.user.phone + '</div>'
+            htmlStr += elem.user.phone
+            htmlStr += '<div  class="move-btn">🡆</div></div>'
             $("#table-inprogress").append(htmlStr);
         }
+        refreshCount();
       },
       error : function(e) {
         console.log("ERROR: ", e);
@@ -74,16 +79,18 @@ function populateAlerts(){
       success : function(data) {
         for(i = 0; i < data.length; i++){
             var elem = data[i];
+            var date = elem.date;
             completedAlerts.push(elem);
             
-            htmlStr = '<div data-id="'+i+'" class="alert">';
+            htmlStr = '<div data-id="'+elem._id+'" class="alert">';
             if (date == formatted_date){
                 htmlStr += '\t<div class="alert-date today">Today</div>'
             }
             else
                 htmlStr += '\t<div class="alert-date">' + date + '</div>'
             htmlStr += elem.user.name.First + " " + elem.user.name.Last + ' | '
-            htmlStr += elem.user.phone + '</div>'
+            htmlStr += elem.user.phone
+            htmlStr += '<div  class="move-btn">🡆</div></div>'
             $("#table-completed").append(htmlStr);
         }
       },
@@ -101,60 +108,80 @@ var selectedAlert;
 var lastSelectedAlert;
 
 setTimeout(function(){
-   $(".alert").mouseover(function(){
-  var offset = $(this).data("id");
-  $('#move-btn').show();
-  $('#move-btn').css("top", 24 + ( offset * 60 )+"px")
-  $(this).addClass("alert-hovered")
-  selectedAlert = $(this);
-});
+setMouseOver();
+
 $(".alert").mouseleave(function(){
   $(this).removeClass("alert-hovered")
-  $('#move-btn').hide();
+  $(this).find('.move-btn').hide();
   selectedAlert = null;
   lastSelectedAlert = $(this);
 });
 
-$("#move-btn").mouseover(function(){
-  $('#move-btn').show();
+$(".move-btn").mouseover(function(){
   selectedAlert = lastSelectedAlert;
   selectedAlert.addClass("alert-hovered")
 });
 
-$("#move-btn").click(function(){
-    var copy;
+function setMouseOver(){
+        $(".alert").off("mouseover");
+      $(".alert").on("mouseover", function(){
+      $(this).find('.move-btn').show(); 
+      $(this).addClass("alert-hovered")
+      selectedAlert = $(this);
+    });
+}
+
+$(".move-btn").click(function(){
+    var tempSelector = selectedAlert;
+    var index;
     
      if( currentTable == "n"){
-        copy = selectedAlert.data("id");
-        selectedAlert.data("id",  inprogressAlerts.length);
-        selectedAlert.appendTo($("#table-inprogress"));
-        inprogressAlerts.push(newAlerts[copy]);
-        newAlerts.splice(copy, 1);
-        
-        // TODO:: then for all elements after the splice position, subtract 1 from data.id
+        (function(){
+            tempSelector.addClass("moving");
+            setTimeout( function(){tempSelector.appendTo($("#table-inprogress")); tempSelector.removeClass("moving");tempSelector.find('.move-btn').css("opacity","1");},400)
+            
+        })();
+        var item = newAlerts.find(item => item._id = tempSelector.data("id"));
+        var updateObj = {_id : item._id, state : "inprogress"};
+        updateAlert(updateObj);
+        index = newAlerts.indexOf(item);
+        inprogressAlerts.push(newAlerts[index]);
+        newAlerts.splice(index, 1);
     }
      else if( currentTable == "ip"){
-        copy = selectedAlert.data("id");
-        selectedAlert.data("id",  completedAlerts.length);
-        selectedAlert.appendTo($("#table-completed"));
-        completedAlerts.push(inprogressAlerts[copy]);
-        inprogressAlerts.splice(copy, 1);
+        (function(){
+            tempSelector.addClass("moving");
+            setTimeout( function(){tempSelector.appendTo($("#table-completed")); tempSelector.removeClass("moving");tempSelector.find('.move-btn').css("opacity","1");},400)
+            
+        })();
+        var item = inprogressAlerts.find(item => item._id = tempSelector.data("id"));
+        var updateObj = {_id : item._id, state : "completed"};
+        updateAlert(updateObj);
+        index = inprogressAlerts.indexOf(item);
+        completedAlerts.push(inprogressAlerts[index]);
+        inprogressAlerts.splice(index, 1);
+        
     }
      else if( currentTable == "c"){
-        copy = selectedAlert.data("id");
-        selectedAlert.data("id",  inprogressAlerts.length);
-        selectedAlert.appendTo($("#table-inprogress"));
-        inprogressAlerts.push(completedAlerts[copy]);
-        completedAlerts.splice(copy, 1);
+        (function(){
+            tempSelector.addClass("moving-left");
+            setTimeout( function(){tempSelector.appendTo($("#table-inprogress")); tempSelector.removeClass("moving-left");tempSelector.find('.move-btn').css("opacity","1");},400)
+            
+        })();
+        var item = completedAlerts.find(item => item._id = tempSelector.data("id"));
+        var updateObj = {_id : item._id, state : "inprogress"};
+        updateAlert(updateObj);
+        index = completedAlerts.indexOf(item);
+        inprogressAlerts.push(completedAlerts[index]);
+        completedAlerts.splice(index, 1);
     }
     
     $('#new_btn').text("New (" + newAlerts.length + ")");
     $('#inprogress_btn').text("In-Progress (" + inprogressAlerts.length + ")");
-    $(this).hide();
+    $('.alert').removeClass("alert-hovered")
 })
 
 }, 300);
-/* End Alert DOM events */
 
 function setupSlider(){
     window.slider = new Swipe(document.getElementById('slider'), {
@@ -191,7 +218,30 @@ function setupSlider(){
       window.slider.slide(2, slide_duration);
       currentTable = "c";
     });
+}
 
+function refreshCount(){
     $('#new_btn').text("New (" + newAlerts.length + ")");
     $('#inprogress_btn').text("In-Progress (" + inprogressAlerts.length + ")");
 }
+
+/* End Alert DOM events */
+
+// updateAlert
+// takes input of _id and state
+function updateAlert(obj){
+    $.ajax({
+      type : "POST",
+      contentType : "application/json",
+      url : "/admin/alerts/update",
+      data : JSON.stringify(obj),
+      dataType : 'json',
+      success : function(data) {
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+      }
+    });
+    
+}
+

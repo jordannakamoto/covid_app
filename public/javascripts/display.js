@@ -1,5 +1,4 @@
 // display.js
-// example: https://postranch.typeform.com/to/sspEfN#name=xxxxx&department=xxxxx&manager=xxxxx&phone=xxxxx&type=xxxxx
 
 $(".inactive").hide();
 $(".result_screen").hide();
@@ -16,17 +15,20 @@ var date = new Date(Date.now());
 var formatted_date;
 var formatted_time;
 var flag = 0; // What question has been answered Yes and what failure screen will show
-var success = "unfinished";
+// flags - 0 clear - 1 symptoms 2 no test 3 exposure 4 travel 5 positive test
+
 var submitted = false;
+var user_state;
 
 var submission = {}
 var transitionTime = 150;
 
+// Initialize
+initUser();
 
-initUserTime();
-
-function initUserTime(){
+function initUser(){
     
+    // Get User from db
    $.ajax({
       type : "GET",
       contentType : "application/json",
@@ -35,18 +37,62 @@ function initUserTime(){
       success : function(data) {
        userFirst = data.name["First"];
        userLast = data.name["Last"];
+       user_state = data.state;
        setLanguage(data.language); // load the text data after userName has been set
+       setAppState();
+       
       },
       error : function(e) {
         console.log("ERROR: ", e);
       }
     });
     
+    // Setup Time Formatting for End Screen and Alert Storage
     formatted_date = date.toLocaleString('en-us', {weekday:'long'}) + " " + (date.getMonth() + 1) + "/" + date.getDate();
     var ampm = date.getHours() >= 12 ? 'pm' : 'am';
     formatted_time = (date.getHours() % 12) + ":" + date.getMinutes() + ampm;
+    
+    // Jumps User to end of DST if they have already completed it
+    function setAppState(){
+        if(user_state == "expected"){
+        }
+        else if(user_state == 0){
+            $('#welcome').hide();
+            showScreen("Success");
+        }
+        else{
+            flag = user_state;
+            $('#welcome').hide();
+            showScreen("Failure");
+        }
+    }
 }
     
+
+/* Loading Animation */
+
+function onReady(callback) {            // Load completion loop    
+  var intervalId = window.setInterval(function() {
+    if (document.getElementsByTagName('body')[0] !== undefined) {
+      window.clearInterval(intervalId);
+      callback.call(this);
+    }
+  }, 1000);
+}
+
+// Hide loading dial and show app
+function setVisible() {
+  $('.indicator').hide();
+  $('.page').fadeIn();
+}
+
+onReady(function() {
+  setVisible();
+});
+
+/* End Loading */
+
+/* Pack and Post to Google Sheet */
 function answersToSubmission(){
     // fill submission dictionary with form data from array
     
@@ -54,7 +100,7 @@ function answersToSubmission(){
     submission["Last Name"] = userLast;
     submission["Date"] = formatted_date;
     submission["Time"] = formatted_time;
-    submission["Status"] = success;
+    submission["Status"] = success;   // this value holds "Failed" if failed.
     
     for(i = 0; i < answers.length ; i++){
       submission["Question "+(i+1)] = answers[i];
@@ -76,39 +122,89 @@ function answersToSubmission(){
     });
 }
 
-
-
+/* English language Data */
 var EnglishData = {
   "Welcome": {"Title": "Welcome %userFirst to The Making Waves Academy daily employee wellness screen",
               "Description": "You must complete this survey before leaving your home to report for work. Your answers will be used to determine if you are clear to work for the day.",},
   "Confirmation": {"Title": "Please enter your Employee ID Number below:"},
-  "Question1": {"Title": "Take your temperature using the company provided thermometer.", "Description":"Is your temperature at or above 100.4 F?"},
-  "Question2": {"Title": "Have you had a Cough or Shortness of Breath or Unusual Fatigue in the last 24 hours?",
-               "Description": "If you have a diagnosed chronic condition with these symptoms, please answer no."},
-  "Question3": {"Title": "Have you had any two of these symptoms in the last 24 hours?", "Image":"https://images.typeform.com/images/rduinNdMUAYM/image/default"},
-  "Question4" : {"Title": "In the last 14 days, what is your exposure to others who are known to have COVID-19?", "Options" : ["I live with someone who has COVID-19","I've had close contact (within 6 feet) with someone who has COVID-19.","I've been near someone who has COVID-19 but was at least 6 feet away and was not exposed to a sneeze or cough.","I've had no exposure","I don't know"]},
-  "Success": {"Title":"All clear!","Description":"Don’t forget to wear a face covering, wash your hands, limit in-person interactions to 10 minutes, and maintain the 6' rule. Have a great day!"},"Failure1":{"Title":"It sounds like your temperature is higher than expected or you may be exhibiting symptoms related to COVID-19.", "Description":"Please seek medical treatment and text your manager to let them know that you are ill and cannot come to work.   HR will reach out to you to discuss next steps."},
-  "Failure2": {"Title":"It sounds like you will need to quarantine for the next 14 days.","Description":"Please text your manager to let them know that you cannot come to work today.   HR will reach out to you to discuss next steps."}
+  "Questions":[
+                        {"Title": "Emergency Signs",
+                            "Description":"If you develop <span class='inline-bold'>emergency warning signs</span> for COVID-19, <span class='inline-bold'>get medical attention immediately</span>. Emergency warning signs include:",
+                            "List":["Trouble breathing","Persistent pain or pressure in the chest","New confusion","Inability to wake or stay awake","Bluish lips or face"],
+                            "Footer":"<span class'inline-italic'>This list is not all inclusive. Please consult your medical provider for any other symptoms that are severe or concerning.</span>",
+                            "Citation":"<span class='inline-italic'>Citation: <a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html</a></span>"
+                            },
+                        {"Title": "Have you been tested for COVID-19 over the past 7 days?",
+                            "Options":["1. No, I  have not been tested in the past 7 days. ","2. Yes, I have been tested in the last 7 days, but I am waiting for the results","3. Yes, I have been tested in the last 7 days and my test was positive.","4. Yes, I have been tested in the last 7 days and my test was negative."]
+                            },
+                        {"Title":"Within the past 14 days, have you been caring for or in close physical contact* with:",
+                           "Description":"*6 feet or closer for a cumulative total of 15 minutes within a 24 hour period",
+                           "Footer":"Anyone who is known to have laboratory-confirmed COVID-19?<br><br>OR<br><br>Anyone who has any symptoms consistent with COVID-19?"
+                           },
+                        {"Title":"Please take your temperature and answer the following:",
+                          "Description":"Is your temperature at or above 100.4 degrees F?"
+                           },
+                        {"Title":"Do you have any of the following symptoms?",
+                           "List":["Chills","Cough or sore throat","Shortness of breath or difficulty breathing","Fatigue, muscle, or body aches", "Headache", "New loss of taste or smell","Congestion or runny nose","Nausea, vomiting. or diarrhea"],
+                           "Footer":"Note: if you are under a doctor's care for a non-contagious chronic condition and have the above symptoms, please answer no."
+                           },
+                        {"Title":"Have you traveled outside of California in the last 10 days?"
+                            }
+    ],
+  "Success": {"Title":"All clear!","Description":"Don’t forget to wear a face covering, wash your hands, limit in-person interactions to 10 minutes, and maintain the 6' rule. Have a great day!"},
+  "Failures":[{"Title":"It sounds like your temperature is higher than expected or you may be exhibiting symptoms related to COVID-19.", "Description":"Please seek medical treatment and text your manager to let them know that you are ill and cannot come to work.   HR will reach out to you to discuss next steps."},
+                    {"Title":"Since we require weekly testing and you have indicated that you have not taken your weekly test, please stay at home","Description":"HR will reach out to you to discuss next steps."},
+                    {"Title":"Based on the information that you have shared, please stay home.","Description":"HR will reach out to you to discuss next steps."},
+                    {"Title":"Please stay home, in accordance with the Calfiiornia Public Health Department advisory.","Description":"travelers traveling into California should self-quarantine for 10 days after arrival. <a href='https://covid19.ca.gov/travel/'>https://covid19.ca.gov/travel/</a>"}
+                    ],
+  "Failure_Error":"If you believe that you received this message in error,  please contact HR at humanresources@mwacademy.org and await further instructions."
 }
 
+/* Spanish language Data */
 var SpanishData = {
-  "Welcome": {"Title": "Bienvenido %userFirst a la pantalla diaria de bienestar de los empleados de PRI. ",
-              "Description": "Debe completar esta encuesta antes de salir de su casa para presentarse a trabajar. Sus respuestas se utilizarán para determinar si está listo para trabajar por el día."},
-  "Confirmation": {"Title": "Por favor, introduzca su número de identificación de empleado a continuación:"},
-  "Question1": {"Title": "Tome su temperatura usando el termómetro proporcionado por la compañía. ¿Su temperatura está en o por encima de 100.4 F?"},
-  "Question2": {"Title": "¿Has tenido tos, dificultad para respirar o fatiga inusual en las últimas 24 horas?  ",
-               "Description": "Si usted tiene una condición crónica diagnosticada con estos síntomas, por favor responda"},
-  "Question3": {"Title": "¿Has tenido dos (2) o alguno de estos síntomas en las últimas 24 horas?   ", "Image":"https://images.typeform.com/images/pvfsLhrRQAV2/image/default"},
-  "Question4" : {"Title": "En los últimos 14 días, ¿cuál es su exposición a otras personas que se sabe que tienen COVID-19?  ", "Options" : ["Vivo con alguien que tiene COVID-19","He tenido contacto cercano (dentro de 6 pies) con alguien que tiene COVID-19.","He estado cerca de alguien que tiene COVID-19 pero estaba al menos a 6 pies de distancia y no estaba expuesto a un estornudo.","No he tenido ninguna exposición","No lo sé"]},
-  "Success": {"Title":"¡Todo listo!", "Description":" No olvides usar una máscara, lavarte las manos, limitar las interacciones con personas a 10 minutos y mantener la regla de 6 piés."},
-"Failure1":{"Title":"Parece que su temperatura es más alta de lo esperado o puede estar exhibiendo síntomas relacionados con COVID-19.","Description":"Busque tratamiento médico y envíe un mensaje de texto a su gerente para informarles que está enfermo y que no puede ir a trabajar. Recursos Humanos se comunicará con usted para discutir los próximos pasos."},
-  "Failure2": {"Title":"Parece que tendrá que poner en cuarentena durante las próximas 2 semanas.","Description":" Envíe un mensaje de texto a su gerente para informarle que no puede venir a trabajar hoy. Recursos Humanos se comunicará con usted para discutir los próximos pasos."}
+  "Welcome": {"Title": "Welcome %userFirst to The Making Waves Academy daily employee wellness screen",
+              "Description": "You must complete this survey before leaving your home to report for work. Your answers will be used to determine if you are clear to work for the day.",},
+  "Confirmation": {"Title": "Please enter your Employee ID Number below:"},
+  "Questions":[
+                        {"Title": "Emergency Signs",
+                            "Description":"If you develop <span class='inline-bold'>emergency warning signs</span> for COVID-19, <span>get medical attention immediately</span>. Emergency warning signs include:",
+                            "List":["Trouble breathing","Persistent pain or pressure in the chest","New confusion","Inability to wake or stay awake","Bluish lips or face"],
+                            "Footer":"<span class'inline-italic'>This list is not all inclusive. Please consult your medical provider for any other symptoms that are severe or concerning.</span>",
+                            "Citation":"<span class='inline-italic'>Citation: <a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html</a></span>"
+                            },
+                        {"Title": "Have you been tested for COVID-19 over the past 7 days?",
+                            "Options":["1. No, I  have not been tested in the past 7 days. ","2. Yes, I have been tested in the last 7 days, but I am waiting for survey results","3. Yes, I have been tested in the last 7 days and my test was negative.","4. Yes, I have been tested in the last 7 days and my test was positive."]
+                            },
+                        {"Title":"Within the past 14 days, have you been caring for or in close physical contact",
+                           "Description":"(6 feet or closer for a cumulative total of 15 minutes within a 24 hour period) with:",
+                           "Footer":"Anyone who is known to have laboratory-confirmed COVID-19?<br>OR<br>Anyone who has any symptoms consistent with COVID-19?"
+                           },
+                        {"Title":"Please take your temperature and answer the following:",
+                          "Description":"Is your temperature at or above 100.4 degrees F?"
+                           },
+                        {"Title":"Do you have any of the following symptoms?",
+                           "List":["Chills","Cough or sore throat","Shortness of breath or difficulty breathing","Fatigue, muscle, or body aches", "Headache", "New loss of taste or smell","Congestion or runny nose","Nausea, vomiting. or diarrhea"],
+                           "Footer":"Note: if you are under a doctor's care for a non-contagious chronic condition and have the above symptoms, please answer no."
+                           },
+                        {"Title":"Have you traveled outside of California in the last 10 days?"
+                            }
+    ],
+  "Success": {"Title":"All clear!","Description":"Don’t forget to wear a face covering, wash your hands, limit in-person interactions to 10 minutes, and maintain the 6' rule. Have a great day!"},
+  "Failures":[{"Title":"It sounds like your temperature is higher than expected or you may be exhibiting symptoms related to COVID-19.", "Description":"Please seek medical treatment and text your manager to let them know that you are ill and cannot come to work.   HR will reach out to you to discuss next steps."},
+                    {"Title":"It sounds like you will need to quarantine for the next 14 days.","Description":"Please text your manager to let them know that you cannot come to work today.   HR will reach out to you to discuss next steps."},
+                    {"Title":"It sounds like you will need to quarantine for the next 14 days.","Description":"Please text your manager to let them know that you cannot come to work today.   HR will reach out to you to discuss next steps."},
+                    {"Title":"Please stay home, in accordance with the Calfiiornia Public Health Department advisory.","Description":"travelers traveling into California should self-quarantine for 10 days after arrival. <a href='https://covid19.ca.gov/travel/'>https://covid19.ca.gov/travel/</a>"}
+                    ],
+  "Failure_Error":"If you believe that you received this message in error,  please contact HR at humanresources@mwacademy.org and await further instructions."
 }
 
+// When the language selector is changed
 $("#language").change(function(){
   setLanguage($("#language option:selected").text());
+  changeUserLanguage(language); // Update language on server
 })
 
+// Set Language
 function setLanguage(language){
   if(language == "English"){
     data = EnglishData;
@@ -119,40 +215,62 @@ function setLanguage(language){
     $("#language").val("spanish");
   }
   
-  changeUserLanguage(language);
-  
+    // Populate DOM
+    // Welcome
     $("#welcome h2").text(data.Welcome.Title.replace ("%userFirst", userFirst));
     $("#welcome p").text(data.Welcome.Description);
-    $("#1 h2").text(data.Question1.Title);
-    $("#1 p").text(data.Question1.Description);
-    $("#2 h2").text(data.Question2.Title);
-    $("#2 p").text(data.Question2.Description);
-    $("#3 h2").text(data.Question3.Title);
-    $("#3 img").attr("src",data.Question3.Image);
-    $("#4 h2").text(data.Question4.Title);
-    $("#4 .choice_btn").remove();
-    $("#4 br").remove();
-    for(var option in data.Question4.Options){
-      var newElement = '<button class="choice_btn btn">'+data.Question4.Options[option]+'</button><br>'
-      // Add negative flags to multiple choice options
-      if(option == 0 || option == 1){
-        newElement = newElement.replace('class="','class="invalid ')
+    // Questions
+    for(i = 0; i < data["Questions"].length; i++){
+        n = i+1;
+        var q = data["Questions"][i];
+        if(q.hasOwnProperty('Title')){
+            $('#'+n+' .title').html(q.Title);
+        }
+        if(q.hasOwnProperty('Description')){
+            $('#'+n+' .description').html(q.Description);
+        }
+         if(q.hasOwnProperty('List')){
+             for(j = 0; j < q.List.length; j++){
+                  $('#'+n+' .list').append('<li>' + q.List[j] + '</li>');
+             }
+        }
+         if(q.hasOwnProperty('Footer')){
+            $('#'+n+' .footer').html(q.Footer);
+        }
+         if(q.hasOwnProperty('Citation')){
+            $('#'+n+' .citation').html(q.Citation);
+        }
+        if(q.hasOwnProperty('Options')){
+            for(var option in q.Options){
+              var newElement = '<button class="choice_btn btn">'+q.Options[option]+'</button><br>'
+              $('#'+n+ ' .answer_multiple').append(newElement);
+            }
+        }
       }
-      $("#4 .answer_multiple").append(newElement);
-    }
-      init_choice_btns();
-      $("#success h2").text(data.Success.Title);
-      $("#success p").text(data.Success.Description);
-      $("#failure_1 h2").text(data.Failure1.Title);
-      $("#failure_1 p").text(data.Failure1.Description);
-      $("#failure_2 h2").text(data.Failure2.Title);
-      $("#failure_2 p").text(data.Failure2.Description);
+      
+      // Setup failure flags for Multiple Choice - Question 2
+      $('#2 .answer_multiple button').eq(0).attr("data-flag","2"); // haven't been tested
+      $('#2 .answer_multiple button').eq(2).attr("data-flag","5"); // recieved positive test result - flag for test result
+      
+      init_choice_btns(); // Create handlers and add next-slide logic to multiple choice buttons logic
+        
+      // Populate Failure screens
+      for(i = 0; i < data["Failures"].length; i++){
+        n = i+1;
+        var f = data["Failures"][i];
+        if(f.hasOwnProperty('Title')){
+            $('#failure'+n+' .title').html(f.Title);
+        }
+        if(f.hasOwnProperty('Description')){
+            $('#failure'+n+' .description').html(f.Description);
+        }
+        $('#failure'+n+' .errormsg').html(data["Failure_Error"]);
+      }
       update();
-    //Make class for multiple choice options
 }
 
 
-
+// Hide welcome screen and the first item
 $(".start_btn").click(function() {
   var domObject = items[current_question - 1];
   setTimeout(function(){
@@ -163,6 +281,9 @@ $(".start_btn").click(function() {
   update();
 })
 
+// Navigation buttons in bottom-right control
+// back and forward
+// determine the range of traversal
 $(".back_btn").click(function() {  
  var domObject = items[current_question - 1];
  var domObject_previous = items[current_question - 2];
@@ -185,9 +306,11 @@ $(".forward_btn").click(function() {
 
  update();
 })
-                      
+
+
+// Yes answer button                      
 $(".yes_btn").click(function() {  
- $("#result_" + current_question).text("Yes");
+ // $("#result_" + current_question).text("Yes");
  answers[current_question - 1] = "Yes";
  var domObject = items[current_question - 1];
  var domObject_next = items[next_question - 1];
@@ -198,24 +321,9 @@ $(".yes_btn").click(function() {
  update();
 })
 
-function init_choice_btns(){
-$(".choice_btn").click(function() {  
- var choice = $(this).text()
- $("#result_" + current_question).text(choice);
- if($(this).hasClass('invalid')){flag = current_question};
- answers[current_question - 1] = choice;
- var domObject = items[current_question - 1];
- var domObject_next = items[next_question - 1];
- $(this).addClass("selected");
- $(this).siblings().removeClass("selected");
- goTo_next(domObject, domObject_next);
-
- update();
-})
-}
-
+// No answer button
 $(".no_btn").click(function() {  
- $("#result_" + current_question).text("No");
+ // $("#result_" + current_question).text("No");
  answers[current_question - 1] = "No";
  var domObject = items[current_question - 1];
  var domObject_next = items[next_question - 1];
@@ -229,6 +337,26 @@ $(".no_btn").click(function() {
 
 update();
 
+// Multiple choice answer buttons
+function init_choice_btns(){
+    $(".choice_btn").click(function() { 
+     var choice = $(this).text()
+     // $("#result_" + current_question).text(choice);
+     // flag if invalid option is clicked
+     if($(this).data('flag')){flag = $(this).data('flag')};
+     // Go to next
+     answers[current_question - 1] = choice;
+     var domObject = items[current_question - 1];
+     var domObject_next = items[next_question - 1];
+     $(this).addClass("selected");
+     $(this).siblings().removeClass("selected");
+     goTo_next(domObject, domObject_next);
+
+     update();
+    })
+}
+
+// Called by answer buttons
 function goTo_next(current, next){
   if(current_question < total_questions){
   $(current).removeClass("active unanswered");
@@ -242,6 +370,8 @@ function goTo_next(current, next){
  }  
 };
 
+// update()
+// Update progress bar and show/hide active/inactive elements
 function update(){
  setTimeout(function(){
    var percent = (answers.length) / total_questions * 100;
@@ -249,7 +379,7 @@ function update(){
       percent = current_question / total_questions * 100;}
    $(".progress-bar").css("width", percent +"%");
    $("#progress").text(current_question + "/" + total_questions);
-   if(current_question > 1 && submitted == false){
+   if(current_question > 1 && user_state == "expected"){
      $('.back_btn').addClass("active");
      $('.back_btn').removeClass("inactive")
   }
@@ -276,6 +406,7 @@ function update(){
  }, transitionTime) 
 }
 
+// Create the submit button after last question has been responded to
 function createSubmitButton(){
   if($(".submit_btn").length < 1){
   $("#submit").append('<button class="submit_btn btn green_btn">Submit</button>');
@@ -292,11 +423,7 @@ function createSubmitButton(){
   }
 }
 
-for (i = 1; i <= total_questions; i++){
-  var result = '<div><span> Question' + i +': </span><span id= "result_' + i + '"></span></div>'; 
-  $("#results_div").append(result)
-}
-
+// Show Success or Failure screens
 function showScreen(screen){
   if (screen == "Success"){
      $('#success_gradient').css("opacity", ".7");
@@ -304,31 +431,53 @@ function showScreen(screen){
     $("#success").fadeIn(500);
   }
   else if (screen == "Failure"){
-    postAlert();
-    if(flag == 4){ // If exposure has been reported on question 4
-    $("#failure_2").fadeIn(500);
+     if(user_state == "expected")   // Unless this screen is being re-loaded
+        postAlert();
+    if(flag == 1){ // Symptoms
+    $("#failure1").fadeIn(500);
     }
-    else{
-    $("#failure_1").fadeIn(500);
+    if(flag == 2){ // No test
+    $("#failure2").fadeIn(500);
+    }
+    if(flag == 3){ // Exposure
+    $("#failure3").fadeIn(500);
+    }
+    if(flag == 4){ // Travel
+    $("#failure4").fadeIn(500);
+    }
+    if(flag == 5){ // Positive Test
+    $("#failure1").fadeIn(500);
     }
   }
 }
 
+// checkAnswers()
+// Determine DST result
 function checkAnswers(){
   for(i = 0; i < answers.length; i++){
-    if(answers[i] == "Yes"){
-      flag = i + 1;
+    if(answers[i] == "Yes" && flag == 0){
+      if(i==2)
+          flag = 3 // Question 3, flag for exposure
+      if(i==5)
+          flag = 4 // Question 5, flag for travel
+      else
+          flag = 1 // Flag for symptoms
     }
   }
   if(flag != 0){
     showScreen("Failure");
-    success = "Failed";
+    user_state = flag.toString();
+    updateState(user_state);
   }
   else{
     showScreen("Success");
-    success = "Passed";
+    updateState(user_state);
   }
 }
+
+/*          */
+/* AJAX */
+/*          */
 
 // Change Language of User
 function changeUserLanguage(_lang) {
@@ -347,6 +496,7 @@ function changeUserLanguage(_lang) {
     });
 }
 
+// Create Alert
 function postAlert() {
         // Change Language of User
     var obj = {
@@ -365,3 +515,25 @@ function postAlert() {
       }
     });
 }
+
+// Update User State - post submit
+function updateState(_state){
+    var obj = {"state": _state}
+    $.ajax({
+      type : "POST",
+      contentType : "application/json",
+      url : "/updatestate",
+      data : JSON.stringify(obj),
+      dataType : 'json',
+      success : function() {
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+      }
+    });
+    
+}
+
+/*          */
+/* AJAX */
+/*          */

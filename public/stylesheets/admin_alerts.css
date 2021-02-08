@@ -130,10 +130,12 @@ body {
 
 /* Slider Alert */
 .alert{
+  position: relative;
   margin-left: 10px;
   width: 80%;
   padding: 20px;
   border-bottom: solid 1px lightgrey;
+  transition: all .3s;
 }
 .alert-date{
   float: left;
@@ -145,25 +147,34 @@ body {
   margin-top: -4px;
 }
 
+.moving{
+    opacity: .7;
+    transform: translate(10px);
+}
+
+.moving-left{
+    opacity: .7;
+    transform: translate(-10px);
+}
+
 .today{
-  background: lightblue;
+  background: #DC143C;
   color: white;
 }
 
-#move-btn-anchor{
-  position: relative;
-}
-#move-btn:hover{
+.move-btn:hover{
   cursor: pointer;
 }
 
-#move-btn{
+.move-btn{
   display: none;
   position: absolute;
+  
   background: white;
   color: grey;
   z-index: 1;
-  right: 100px;
+  top: 10px;
+  right: 20px;
   text-align: center;
   padding: 8px 12px ;
   border-radius: 5px;

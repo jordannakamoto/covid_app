@@ -5,16 +5,17 @@ block css
 
 block content
     .form
-        .title Login
         form(method="POST" action="/login" id="login_form")
-          .input-container.ic1
-              input#login_name.input(type='text' name="uname")
+         .title Login
+         .subtitle Making Waves Academy Wellness Tool
+         .input-container.ic1
+              input#login_name.input(type='text' name="uname"  placeholder=' ')
               .cut
-              label.placeholder(for='firstname') Username
-          .input-container.ic1
-              input#login_name.input(type='password' name="pw")
+              label.placeholder(for='username') Username
+         .input-container.ic1
+              input#login_name.input(type='password' name="pw"  placeholder=' ')
               .cut
-              label.placeholder(for='firstname') Username
-           button(type='submit').submit Login
-          div
-            a(href="/") Reset Password
+              label.placeholder(for='password') Password
+         button(type='submit').submit Login
+         div
+           a(href="/" style="font-family: Sans-Serif") Reset Password

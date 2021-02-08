@@ -2,65 +2,94 @@ extends layout
 block css
     link(rel='stylesheet', href='/stylesheets/style.css')
 block content
-    #success_gradient
-    #welcome.welcome_screen
-      img(src='https://making-waves.org/wp-content/uploads/2017/07/MakingWavesAcademy_boldtypea-289x300.jpg')
-      h2
-      p
-      .answer.active
-        button.start_btn.btn
-          | Start
-    #1.item.inactive.unanswered
-      .question
-        h2
-        p
-      .answer
-        button.yes_btn.btn Yes
-        button.no_btn.btn No
-    #2.item.inactive.unanswered
-      .question
-        h2
-        p
-      .answer
-        button.yes_btn.btn Yes
-        button.no_btn.btn No
-    #3.item.inactive.unanswered
-      .question
-        h2
-        img
-      .answer
-        button.yes_btn.btn Yes
-        button.no_btn.btn No
-    #4.item.inactive.unanswered
-      .question
-        h2
-      .answer_multiple
-      #submit
-      img#distancing(src='https://i.ibb.co/bPH41Pt/testgraphic.png')
-    #success.result_screen
-      h2
-      img(src='https://i.ibb.co/y073Rvx/tick-inside-circle-1.png' width='100px')
-      p
-      span
-    #failure_1.result_screen
-      h2
-      p
-    #failure_2.result_screen
-      h2
-      p
-    #results_div
-      span(id='#results')
-        | Results:
-    .container
-      span#progress
-      .progress
-        .progress-bar
-    #footer
-      button.back_btn.inactive ∧
-      button.forward_btn.inactive ∨
-      select#language
-        option(value='english') English
-        option(value='spanish') Spanish
+    .indicator 
+          svg(width='16px', height='12px')
+            polyline#back(points='1 6 4 6 6 11 10 1 12 6 15 6')
+            polyline#front(points='1 6 4 6 6 11 10 1 12 6 15 6')
+    .page
+        #success_gradient
+        #welcome.welcome_screen
+          img(src='https://making-waves.org/wp-content/uploads/2017/07/MakingWavesAcademy_boldtypea-289x300.jpg')
+          h2
+          p
+          .answer.active
+            button.start_btn.btn
+              | Start
+        #1.item.inactive.unanswered
+          .question
+            h2.title
+            p.description
+            ul.list
+            p.footer
+            p.citation
+          .answer
+            button.yes_btn.btn Yes
+            button.no_btn.btn No
+        #2.item.inactive.unanswered
+          .question
+            h2.title
+          .answer_multiple
+        #3.item.inactive.unanswered
+          .question
+            h2.title
+            p.description
+            p.footer
+           .answer
+            button.yes_btn.btn Yes
+            button.no_btn.btn No
+        #4.item.inactive.unanswered
+          .question
+            h2.title
+            p.description
+           .answer
+            button.yes_btn.btn Yes
+            button.no_btn.btn No
+        #5.item.inactive.unanswered
+          .question
+            h2.title
+            ul.list
+            p.footer
+           .answer
+            button.yes_btn.btn Yes
+            button.no_btn.btn No
+        #6.item.inactive.unanswered
+          .question
+            h2.title
+           .answer
+            button.yes_btn.btn Yes
+            button.no_btn.btn No
+            #submit
+        #success.result_screen
+          h2.title
+          img(src='https://i.ibb.co/y073Rvx/tick-inside-circle-1.png' width='100px')
+          p.description
+          span
+        #failure1.result_screen
+          h2.title
+          p.description
+          p.errormsg
+        #failure2.result_screen
+          h2.title
+          p.description
+          p.errormsg
+        #failure3.result_screen
+          h2.title
+          p.description
+          p.errormsg
+        #failure4.result_screen
+          h2.title
+          p.description
+          p.errormsg
+        .container
+          span#progress
+          .progress
+            .progress-bar
+        #footer
+          button.back_btn.inactive ∧
+          button.forward_btn.inactive ∨
+          select#language
+            option(value='english') English
+            option(value='spanish') Spanish
 
 
 block scripts        

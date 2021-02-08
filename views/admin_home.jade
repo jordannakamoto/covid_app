@@ -16,26 +16,32 @@ block content
             a(href='/admin/users') Users
           li
             a(href='https://docs.google.com/spreadsheets/d/1yJWURjN98gjpeAfh9GAb1UTLecJh2kmIHof3m946Jvw/edit?usp=sharing' target='_blank')  Sheet 
-          li Drive
+          li 
+            a Drive
       #dash-panel
         #alerts-widget.item.no-new
           h1.widget-big-num 0
           h3.widget-med-text New Alerts
-          h3.widget-sub-text.are-pending 3 Pending
+          h3.widget-sub-text
         #completion-widget.item
           h1.widget-med-num 0%
           h3.widget-med-text Completed
-          h3.widget-sub-text  0 Outstanding
+          h3.widget-sub-text
         #visitor-widget.item
           h1.widget-big-num 0
           h3.widget-med-text Visitors
           h3.widget-sub-text Today
       #dash-table
-        h3 Employee Status
-        ul
-          li Gordon Nikimutu - Quarantined 20 Days
-          li Gordon Nikimutu - Needs Vaccination
-          li Bailey - Working from Home
+          #completion-panel
+              #awaiting.completion-container Awaiting
+                ul
+              #completed.completion-container Completed
+                ul
+        // h3 Employee Status
+        // ul
+          // li Gordon Nikimutu - Quarantined 20 Days
+          // li Gordon Nikimutu - Needs Vaccination
+          // li Bailey - Working from Home
           
 block scripts          
     script(src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async='' defer='').

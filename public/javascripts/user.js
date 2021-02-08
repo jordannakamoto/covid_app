@@ -1,10 +1,66 @@
-/* user.js */
-
 //<img src="https://i.ibb.co/nsp3Yw9/cloud-1.png" width="16px">
 
 $('#field_username').text("jordan");
 $('#field_group').text("students");
 $('#field_vacDoc').text("google.com/myDoc");
+
+
+// Programatic spaghetti
+var schoolwideCount;
+/* Ajax Populate Group Expandables */
+
+function populateGroups(){
+    $.ajax({
+      type : "GET",
+      contentType : "application/json",
+      url : "/admin/users/group/School-wide",
+      dataType : 'json',
+      success : function(data) {
+          for(i = 0; i < data.length; i++){
+            var userStr;
+            userStr = data[i].name.First + " " + data[i].name.Last;
+            userStr += ' - ' + data[i].title;
+            // if(data[i].state == "expected"){
+                // userStr += '<div class="scheduled"></div>'
+            // }
+            $('#sw-ul').append('<li>' + userStr + '</li>')
+          }
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+      }
+    });
+    
+}
+
+function populateGroups2(){
+    $.ajax({
+      type : "GET",
+      contentType : "application/json",
+      url : "/admin/users/group/US 1",
+      dataType : 'json',
+      success : function(data) {
+          for(i = 0; i < data.length; i++){
+            var userStr;
+            userStr = data[i].name.First + " " + data[i].name.Last;
+            userStr += ' - ' + data[i].title;
+            $('#us-ul').append('<li>' + userStr + '</li>')
+          }
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+      }
+    });
+    
+}
+
+// Call AJAX -- fetch data
+populateGroups();
+populateGroups2();
+
+/* End Ajax */
+
+
 
 // Tracks visibility of saveBtn but also if document is in a saveable state.
 var saveBtn_isVisible = false;
@@ -65,3 +121,25 @@ function submitChanges(){
       $("#user_saved").css("top","48px");
  
 }
+
+/* Expandable */
+(function() {
+  const headings = document.querySelectorAll('h2');
+  
+  Array.prototype.forEach.call(headings, h => {
+    let btn = h.querySelector('button');
+    let target = h.nextElementSibling;
+    
+    if(btn){
+      btn.onclick = () => {
+        let expanded = btn.getAttribute('aria-expanded') === 'true';
+
+        btn.setAttribute('aria-expanded', !expanded);
+        target.hidden = expanded;  
+      }
+    }
+  });
+})()
+
+/* end Expandable */
+

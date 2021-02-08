@@ -1,5 +1,5 @@
 // namelist.js
-// used for registration to provide users with a unique registration url and populate their name data
+// keeps track of which users are in a registration active state + another list of which users are in a password reset state
 
 const fs = require('fs');
 

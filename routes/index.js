@@ -23,27 +23,32 @@ router.post('/register-*', function(req,res,next) {
     var newUser;
     
     
-    var key = req.originalUrl;   // employee code from url
-    key = key.split('-')[1];
-    var name = nameList.validateRegister(key);
+    var _key = req.originalUrl;   // employee code from url
+    _key = _key.split('-')[1];
     
-    if (name){
-        User.findOne({ username: req.body.uname})
+    if (_key){
+        User.findOne({ key: _key})
                 .then((user) => {
-                    
+                    console.log(user.key);
+                    console.log(_key);
                     if (!user) {
-                        newUser = createUser(req, name, hash, salt);
-                        newUser.save()
-                        .then((user) => {
-                            console.log(user);
-                        });
-                        nameList.clearEntry(key);
-                        res.redirect('/login');
+                        res.redirect('/registration-error');
                     }
-                    else{
-                        console.log("Error: User " + req.body.uname +" already exists");
+                    else if(user.activity != "inactive"){
+                        console.log("Error: User " + user.username +" already exists");
                         res.header('Error', "User exists"); // this isn't handled, need to make the request through ajax
                         res.redirect('/registration-error');
+                    }
+                    else{
+                        user.username = req.body.uname;
+                        user.hash = hash;
+                        user.salt = salt;
+                        user.state = "new";
+                        user.language = "English";
+                        console.log(user.name.First + " " + user.name.Last + "  successfully updated with username" + user.username);
+                        user.activity = "active";
+                        user.save();
+                        res.redirect('/login')
                     }
                 });
     }
@@ -51,17 +56,39 @@ router.post('/register-*', function(req,res,next) {
 
 /* GET */
 
+// Get Index Rules
+router.get('',function(req,res,next){
+    if(req.user){
+        res.redirect('/dst');
+    }
+    else{
+        res.redirect('/login');
+    }
+    
+    
+});
+
+
 // render register page at index
 router.get('/register-*',function(req,res,next){
-    var key = req.originalUrl;   // employee code from url
-    key = key.split('-')[1];
-    var name = nameList.validateRegister(key);
-    
-    console.log(name);
-    if (name){
-        res.render('register', {title:'Daily Screening Tool'});
-    }   else{
-        res.redirect('registration-error');
+    var _key = req.originalUrl;   // employee code from url
+    _key = _key.split('-')[1];
+     
+     if (_key){
+        User.findOne({ key: _key})
+                .then((user) => {
+                    if (!user) {
+                        res.redirect('/registration-error');
+                    }
+                    else if(user.activity != "inactive"){
+                        console.log("Error: User " + user.username +" already exists");
+                        res.header('Error', "User exists"); // this isn't handled, need to make the request through ajax
+                        res.redirect('/registration-error');
+                    }
+                    else{
+                        res.render('register', {title:'Daily Screening Tool'});
+                    }
+                });
     }
 });
 
@@ -90,7 +117,7 @@ router.get('/dst', function(req, res, next) {
 // Get username from session data
 // To-Do set as protected path
 router.get('/user', function(req,res){
-    var info = {"name": req.user.name, "language": req.user.language}
+    var info = {"name": req.user.name, "language": req.user.language, "state": req.user.state}
     res.send(info);
 });
 
@@ -98,9 +125,21 @@ router.get('/user', function(req,res){
 // To-Do set as protected path
 router.post('/changelanguage', function(req,res){
     var foo = req.user.username;
-    var test = req.body["language"];
+    var lang = req.body["language"];
     (async function (){
-        connection.collections.users.updateOne({"username":foo}, { $set: {"language": test}});
+        connection.collections.users.updateOne({"username":foo}, { $set: {"language": lang}});
+    }());
+    
+});
+
+// Get username from session data
+// To-Do set as protected path
+router.post('/updateState', function(req,res){
+    var foo = req.user.username;
+    console.log(req.body)
+    var newstate = req.body["state"];
+    (async function (){
+        connection.collections.users.updateOne({"username":foo}, { $set: {"state": newstate}});
     }());
     
 });
@@ -127,29 +166,10 @@ router.post('/toGoogle', function(req, res) {
   sheet.postRow(row);
 });
 
-function createUser(req, name, hash, salt){
-    user = new User({
-                    username: req.body.uname,
-                    name: name,
-                    language: "English",
-                    hash: hash,
-                    state: "new", 
-                    phone: "123-456-7891",
-                    salt: salt,
-                    isActive: true,
-                    group: "unassigned",
-                        Schedule: {  // store time as float
-                            Mon: 0.0,
-                            Tue: 0.0,
-                            Wed: 0.0,
-                            Thu: 0.0,
-                            Fri: 0.0,
-                            Sat: 0.0,
-                            Sun: 0.0
-                        }
-                    });
-     return user;
-}
+router.get('/admin/addFromSheet', function(req, res) {
+  var row = req.body
+  sheet.createUsers();
+});
 
 
 module.exports = router;

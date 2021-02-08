@@ -11,30 +11,41 @@ const connection = mongoose.createConnection(conn, {
 
 // UserSchemag
 const UserSchema = new mongoose.Schema({
+    // App properties
     username: String,
-    name: Object, // first and last name keys
-    language: String, // user can set language English/Spanish
     hash: String,
     salt: String,
+    key: String,
+    _isNew: Boolean,            // naming conflict so we need _
+    alerts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Alert'
+    }],
+    
+    // Employee properties
+    name: Object, // first and last name keys
     phone: String,
     email: String,
+    title: String,
+    group: String,
+    Schedule: {  // store time as float
+        "M": Boolean,
+        "T": Boolean,
+        "W": Boolean,
+        "Th": Boolean,
+        "F": Boolean,
+        "S": Boolean,
+        "Su": Boolean        
+    },
+    
+    // App Settings
+    language: String, // user can set language English/Spanish
+    accessLevel: String,
     vacURL: String,      // link to vac document
     
+    // App States
     state: String,         // has the person taken the survey today
-    
-    activity: String,     // is the person working from home, in quarantine, needs vaccination etc.
-    group: String,
-    accessLevel: String,
-    Schedule: {  // store time as float
-        Mon: {"start": 0, "end": 0},
-        Tue: {"start": 0, "end": 0},
-        Wed: {"start": 0, "end": 0},
-        Thu: {"start": 0, "end": 0},
-        Fri: {"start": 0, "end": 0},
-        Sat: {"start": 0, "end": 0},
-        Sun: {"start": 0, "end": 0}
-    },
-    title: String
+    activity: String,    // is the person working from home, in quarantine, needs vaccination etc.
 });
 
 // https://alexanderzeitler.com/articles/mongoose-referencing-schema-in-properties-and-arrays/
@@ -49,7 +60,17 @@ const AlertSchema = new mongoose.Schema({
     state: String             // new, in-progress, completed
 });
 
+const UserListSchema = new mongoose.Schema({
+    name: String,
+    list:  [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      }]
+
+})
+
 const User = connection.model('User', UserSchema);
 const Alert = connection.model('Alert', AlertSchema);
+const UserList = connection.model('UserList', UserListSchema);
 
 module.exports = connection;
