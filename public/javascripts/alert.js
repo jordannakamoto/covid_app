@@ -123,8 +123,7 @@ $(".move-btn").mouseover(function(){
 });
 
 function setMouseOver(){
-        $(".alert").off("mouseover");
-      $(".alert").on("mouseover", function(){
+      $(".alert").mouseover(function(){
       $(this).find('.move-btn').show(); 
       $(this).addClass("alert-hovered")
       selectedAlert = $(this);
