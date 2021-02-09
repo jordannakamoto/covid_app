@@ -38,7 +38,7 @@ function initUser(){
        userFirst = data.name["First"];
        userLast = data.name["Last"];
        user_state = data.state;
-       setLanguage(data.language); // load the text data after userName has been set
+       setLanguage(data.language, "none"); // load the text data after userName has been set
        setAppState();
        
       },
@@ -132,14 +132,14 @@ var EnglishData = {
                             "Description":"If you develop <span class='inline-bold'>emergency warning signs</span> for COVID-19, <span class='inline-bold'>get medical attention immediately</span>. Emergency warning signs include:",
                             "List":["Trouble breathing","Persistent pain or pressure in the chest","New confusion","Inability to wake or stay awake","Bluish lips or face"],
                             "Footer":"<span class'inline-italic'>This list is not all inclusive. Please consult your medical provider for any other symptoms that are severe or concerning.</span>",
-                            "Citation":"<span class='inline-italic'>Citation: <a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html</a></span>"
+                            "Citation":"<span class='inline-italic'>Citation: <a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>https://www.cdc.gov/coronavirus</a></span>"
                             },
                         {"Title": "Have you been tested for COVID-19 over the past 7 days?",
                             "Options":["1. No, I  have not been tested in the past 7 days. ","2. Yes, I have been tested in the last 7 days, but I am waiting for the results","3. Yes, I have been tested in the last 7 days and my test was positive.","4. Yes, I have been tested in the last 7 days and my test was negative."]
                             },
-                        {"Title":"Within the past 14 days, have you been caring for or in close physical contact* with:",
-                           "Description":"*6 feet or closer for a cumulative total of 15 minutes within a 24 hour period",
-                           "Footer":"Anyone who is known to have laboratory-confirmed COVID-19?<br><br>OR<br><br>Anyone who has any symptoms consistent with COVID-19?"
+                        {"Title":"Within the past 14 days, have you been caring for or in close physical contact with:",
+                           "Description":"<br>Anyone who is known to have laboratory-confirmed COVID-19?<br><br>OR<br><br>Anyone who has any symptoms consistent with COVID-19?",
+                           "Footer":'"Close physical contact" is defined as 6 feet or closer for a cumulative total of 15 minutes within a 24 hour period.'
                            },
                         {"Title":"Please take your temperature and answer the following:",
                           "Description":"Is your temperature at or above 100.4 degrees F?"
@@ -170,7 +170,7 @@ var SpanishData = {
                             "Description":"If you develop <span class='inline-bold'>emergency warning signs</span> for COVID-19, <span>get medical attention immediately</span>. Emergency warning signs include:",
                             "List":["Trouble breathing","Persistent pain or pressure in the chest","New confusion","Inability to wake or stay awake","Bluish lips or face"],
                             "Footer":"<span class'inline-italic'>This list is not all inclusive. Please consult your medical provider for any other symptoms that are severe or concerning.</span>",
-                            "Citation":"<span class='inline-italic'>Citation: <a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html</a></span>"
+                            "Citation":"<span class='inline-italic'>Citation: <a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>https://www.cdc.gov/coronavirus</a></span>"
                             },
                         {"Title": "Have you been tested for COVID-19 over the past 7 days?",
                             "Options":["1. No, I  have not been tested in the past 7 days. ","2. Yes, I have been tested in the last 7 days, but I am waiting for survey results","3. Yes, I have been tested in the last 7 days and my test was negative.","4. Yes, I have been tested in the last 7 days and my test was positive."]
@@ -200,12 +200,11 @@ var SpanishData = {
 
 // When the language selector is changed
 $("#language").change(function(){
-  setLanguage($("#language option:selected").text());
-  changeUserLanguage(language); // Update language on server
+  setLanguage($("#language option:selected").text(),"update");
 })
 
 // Set Language
-function setLanguage(language){
+function setLanguage(language, setting){
   if(language == "English"){
     data = EnglishData;
     $("#language").val("english");
@@ -214,7 +213,9 @@ function setLanguage(language){
     data = SpanishData;
     $("#language").val("spanish");
   }
-  
+    if(setting == "update"){
+        changeUserLanguage(language); // Update language on server
+    }
     // Populate DOM
     // Welcome
     $("#welcome h2").text(data.Welcome.Title.replace ("%userFirst", userFirst));
@@ -401,7 +402,7 @@ function update(){
   }
   
   if(current_question == total_questions && answers.length == total_questions){
-    createSubmitButton();
+    $('#submit').fadeIn(300);
     $(".progress-bar").css("width", "100%");
   }
   
@@ -410,11 +411,8 @@ function update(){
  }, transitionTime) 
 }
 
-// Create the submit button after last question has been responded to
-function createSubmitButton(){
-  if($(".submit_btn").length < 1){
-  $("#submit").append('<button class="submit_btn btn green_btn">Submit</button>');
-  $(".submit_btn").click(function(){
+// submit_btn onclick
+$(".submit_btn").click(function(){
     setTimeout(function(){
       $("#" + items.length).addClass("inactive");
       $(".back_btn").addClass("inactive");
@@ -423,9 +421,8 @@ function createSubmitButton(){
       submitted = true;
       answersToSubmission();
     },transitionTime);
-  })
-  }
-}
+ });
+
 
 // Show Success or Failure screens
 function showScreen(screen){

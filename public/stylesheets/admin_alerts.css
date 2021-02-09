@@ -1,3 +1,18 @@
+
+@media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){
+    #slider-panel{
+        width: 100vw !important;
+    }
+   #slider-nav ul{
+        margin-top: -40px;
+        text-align: left !important;
+    }
+    #slider-nav ul li{
+        margin-right: 10px !important;
+}
+
+}
+
 html{
   height: 100%;
 }

@@ -1,5 +1,16 @@
 /* admin_home.css*/
 
+
+
+@media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){
+    #dash-panel{
+        margin-top: 5vh !important;
+        flex-direction: column;
+        width: 90vw !important;
+        height: 80vh !important;
+    }
+
+}
 html{
   height: 100%;
 }

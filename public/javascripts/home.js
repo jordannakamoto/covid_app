@@ -1,5 +1,6 @@
 /* home.js */
 
+//https://icons8.com/icons/set/green
 /* hold alert data clientside */
 var newAlerts = [];
 var inprogressAlerts = [];
@@ -102,7 +103,7 @@ function populateCompletion(){
         var percent = completed.length/expected.length * 100;
         percent = Math.round(percent);
         if(percent == 100){
-            changeFavicon('https://img.icons8.com/color/72/task-completed.png');
+            changeFavicon('https://img.icons8.com/emoji/2x/green-circle-emoji.png');
             document.title = "DST - Complete";
             refresh = false;
         }

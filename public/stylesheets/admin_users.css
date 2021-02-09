@@ -380,4 +380,10 @@ input:focus{
   fill: currentColor;
 }
 
+#sw-ul li{
+    white-space: nowrap;
+}
+#us-ul li{
+    white-space: nowrap;
+}
 /* page styles */

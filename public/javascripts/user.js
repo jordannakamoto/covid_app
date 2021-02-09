@@ -59,6 +59,7 @@ function populateGroups2(){
             var userStr;
             userStr = data[i].name.First + " " + data[i].name.Last;
             userStr += ' - ' + data[i].title;
+            userStr += ' | ' +data[i].state;
             $('#us-ul').append('<li>' + userStr + '</li>')
           }
       },

@@ -6,6 +6,10 @@ body{
   margin-top: 100px;
   }
 
+#language{  
+    display: none;
+}
+
 /* set elements to invisible until load is ready */
 .page{
     display: none;
@@ -51,17 +55,31 @@ body{
     width: 40%;
   }
   
+  .title{
+      margin-top: 8vh;
+  }
   .question img{
   width: 100% !important;
 }
   .answer{
     position: fixed;
-    bottom: 15vh;
+    bottom: 12vh;
   }
   
   .answer_multiple{
+    position: absolute;
+    bottom: 20vh;
+    margin: auto;
+    left: 5vw;
     width: 85% !important;
    }
+   
+   .answer_multiple button{
+       border-radius: 10px;
+       padding: 15px;
+       margin-top: .5em;
+   }
+    
   .container{
     width: 100%;
   }
@@ -72,7 +90,7 @@ body{
     font-weight: 500;
     margin: .3em;
     padding: .6em;
-    width: 40%;
+    width: 40% !important;
   }
   
   .submit_btn{
@@ -99,19 +117,28 @@ body{
     text-align: center;
     margin: auto;
     margin-top: 10px;
+    display: none;
 }
 
 h2{
   font-weight: 500;
 }
 
+.list{
+    margin-top: 2em;
+    margin-bottom: -2em;
+}
+.list li{
+    margin-top: .5em;
+}
+
 /* question footer text */
 .footer{
-    margin-top: 3em;
+    margin-top: 4em;
 }
 
 .errormsg{
-    margin-top: 2em;
+    margin-top: 2em;    
 }
 
 

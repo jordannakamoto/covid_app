@@ -5,3 +5,9 @@
 a:-webkit-any-link {
     text-decoration: none;
 }
+
+@media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){
+    #navigation-area{
+        display: none;
+    }
+}
