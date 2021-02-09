@@ -9,6 +9,9 @@ var completed;
 var expected;
 var awaiting;
 
+var refresh = true;
+// var minutes = 15; // refresh interval
+
 function populateAlerts(){
     // get and clone newAlerts array
     $.ajax({
@@ -56,8 +59,11 @@ function populateAlerts(){
         console.log("ERROR: ", e);
       }
     });
+    
+    $('#alerts-widget').click(()=> {
+        window.location.href='/admin/alerts'
+    })
 }
-
 
 function populateCompletion(){
     // get expected users for today
@@ -76,7 +82,12 @@ function populateCompletion(){
       error : function(e) {
         console.log("ERROR: ", e);
       }
+    }).then(function() {           // on completion, restart
+        if(refresh == false)
+            return;
+       setTimeout(populateCompletion, 10000 );  // function refers to itself * 60 * minutes
     });
+    
     // get completed users for today
     function getCompleted(results){
         return results.filter(user => user.state != "expected");
@@ -90,11 +101,21 @@ function populateCompletion(){
     function updateCompletion(){
         var percent = completed.length/expected.length * 100;
         percent = Math.round(percent);
+        if(percent == 100){
+            changeFavicon('https://img.icons8.com/color/72/task-completed.png');
+            document.title = "DST - Complete";
+            refresh = false;
+        }
+        else{
+            document.title = "DST - " + percent + "%";
+        }
         $('#completion-widget .widget-med-num').text(percent + '%');
         $('#completion-widget .widget-sub-text').text(  completed.length + '/' + expected.length + ' Employees');
     }
     // update dash table
     function updateDashTable(){
+        $('#completed ul li').remove();
+        $('#awaiting ul li').remove();
         for(i = 0; i < completed.length; i++)
             $('#completed ul').append('<li>' + completed[i].name.First + " " + completed[i].name.Last + '</li>')
         for(i = 0; i < awaiting.length; i++)
@@ -104,6 +125,12 @@ function populateCompletion(){
 
 populateAlerts();
 populateCompletion();
+
+
+// Change Favicon
+function changeFavicon(src) {
+    $('link[rel="icon"]').attr('href', src)
+}
 
 /* Events */
 
