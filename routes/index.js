@@ -5,6 +5,7 @@ const User = connection.models.User;
 const Alert = connection.models.Alert;
 const nameList = require('../lists/namelist.js');
 const isAuth = require('./authMiddleware').isAuth;
+const sUtil = require('../lib/scheduleUtil.js')
 
 var express = require('express');
 var router = express.Router();
@@ -20,8 +21,6 @@ router.post('/register-*', function(req,res,next) {
     
     const salt = saltHash.salt;
     const hash = saltHash.hash;
-    
-    var newUser;
     
     
     var _key = req.originalUrl;   // employee code from url
@@ -79,9 +78,7 @@ router.get('/terms',function(req,res,next){
 router.get('/activate',function(req,res,next){
         User.findOne({_id:req.user._id})
             .then((user)=> {
-                user.state = "expected";
-                user.save();
-                
+                sUtil.setOneExpected(user._id)
                 });
         
         res.redirect('/');   
@@ -124,11 +121,11 @@ router.get('/login', function(req,res,next){
 
 // render /dst page for questionnaire
 router.get('/dst', function(req, res, next) {
-    // initial terms an 
-   // if(req.user.state == "new"){
-       // res.send("blah blah blah");
-   // }
-  res.render('index', { title: 'Daily Screening Tool' });
+  if(req.user.state == "idle"){
+      res.send("Sorry, you are not scheduled to work today")
+  }
+  else
+    res.render('index', { title: 'Daily Screening Tool' });
 });
 
 // -- Client AJAX -- //

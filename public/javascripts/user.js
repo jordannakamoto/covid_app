@@ -20,6 +20,7 @@ function populateGroups(){
             var userStr;
             userStr = data[i].name.First + " " + data[i].name.Last;
             userStr += ' - ' + data[i].title;
+            userStr += ' | ' +data[i].state;
             // if(data[i].state == "expected"){
                 // userStr += '<div class="scheduled"></div>'
             // }
