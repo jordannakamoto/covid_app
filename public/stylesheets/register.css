@@ -1,3 +1,11 @@
+@media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){
+    .form{
+        margin-top: -100px !important;
+    }
+
+}
+
+
 body {
   align-items: center;
   background-color: #fff;
@@ -5,13 +13,25 @@ body {
   justify-content: center;
   height: 100vh;
 }
+img{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 60px;
+    border-radius: 50%;
+    opacity: .5;
+    background: white;
+}
+
 
 .form {
-   margin-top: -100px;
-  background-color: #97D9E1;
+   position: relative;
+  margin-top: -200px;
+  background-color: #d5e8eb;
+  border: solid 1px #97D9E1;
   border-radius: 20px;
   box-sizing: border-box;
-  height: 500px;
+  height: 480px;
   padding: 20px;
   width: 320px;
 }
@@ -21,14 +41,13 @@ body {
   font-family: sans-serif;
   font-size: 36px;
   font-weight: 600;
-  margin-top: 30px;
+  margin-top: 14px;
 }
 
 .subtitle {
   color: #65657b;
   font-family: sans-serif;
   font-size: 16px;
-  font-weight: 600;
   margin-top: 10px;
 }
 
@@ -47,20 +66,28 @@ body {
 }
 
 .input {
-  background-color: #eee;
+  background-color: #fafafa;
   border-radius: 12px;
   border: 0;
   box-sizing: border-box;
-  color: #303245;
-  font-size: 18px;
+  color: #000;
+  font-size: 15px;
   height: 100%;
   outline: 0;
   padding: 4px 20px 0;
   width: 100%;
 }
 
+#reset a{
+    font-size: 14px;
+    text-decoration: none;
+}
+#reset{
+    padding-top: 2em;
+    text-align: right;
+}
 .cut {
-  background-color: #97D9E1;
+  background-color: #d5e8eb;
   border-radius: 10px;
   height: 20px;
   left: 20px;

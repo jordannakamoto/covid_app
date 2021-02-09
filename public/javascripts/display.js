@@ -218,7 +218,7 @@ function setLanguage(language, setting){
     }
     // Populate DOM
     // Welcome
-    $("#welcome h2").text(data.Welcome.Title.replace ("%userFirst", userFirst));
+    $("#welcome h2").text(data.Welcome.Title.replace ("%userFirst", userFirst +","));
     $("#welcome p").text(data.Welcome.Description);
     // Questions
     for(i = 0; i < data["Questions"].length; i++){
@@ -426,6 +426,7 @@ $(".submit_btn").click(function(){
 
 // Show Success or Failure screens
 function showScreen(screen){
+ $('.progress-bar').hide();
   if (screen == "Success"){
      $('#success_gradient').css("opacity", ".7");
     $("#success span").text(formatted_date);

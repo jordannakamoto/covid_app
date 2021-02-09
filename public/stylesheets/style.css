@@ -18,7 +18,7 @@ body{
 #success_gradient{
   position: absolute;
   width: 100vw;
-  height: 70vh;
+  height: 10    0vh;
   top:0;
   right: 0;
   bottom: 0;
@@ -34,6 +34,9 @@ body{
   body{
   width: 95%;
   margin-top: 20px;
+  }
+  .question{
+      padding: 0px 20px !important;
   }
   .question img{
   width: 100% !important;
@@ -63,12 +66,21 @@ body{
 }
   .answer{
     position: fixed;
-    bottom: 12vh;
+    bottom: 10vh;
+  }
+  #welcome{
+      padding: 20px;
+  }
+  #welcome p{
+      padding: 10px;
+  }
+  #welcome .answer{
+      bottom: 18vh;
   }
   
   .answer_multiple{
     position: absolute;
-    bottom: 20vh;
+    bottom: 14vh;
     margin: auto;
     left: 5vw;
     width: 85% !important;

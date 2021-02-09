@@ -1,5 +1,23 @@
 /* terms.css */
 
+@media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){
+    body{
+        width: 100% !important;
+    }
+    p{
+        margin: 20px;
+    }
+    #button-area{
+        text-align: center !important;
+    }
+    #continue-btn{
+        font-size: 1.2em;
+        padding: 6px 12px !important;
+        margin-right: 0 !important;
+    }
+
+}
+
 body{
   width: 610px;
   margin: auto;
