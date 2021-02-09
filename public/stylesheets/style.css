@@ -1,5 +1,5 @@
 body{
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family:  'hk_groteskregular','Source Sans Pro', sans-serif;
   font-weight: 400;
   max-width: 730px;
   margin: auto;
@@ -15,6 +15,10 @@ body{
     display: none;
 }
 
+#success .description{
+    font-size: 1.1em;
+}
+
 #success_gradient{
   position: absolute;
   width: 100vw;
@@ -23,7 +27,7 @@ body{
   right: 0;
   bottom: 0;
   left: 0;
-  background: -webkit-linear-gradient(180deg, #2D66B5, #63A4FF);
+  background: -webkit-linear-gradient(180deg, #C9D9FF, #F89B9E);
   z-index: -1;
   opacity: 0;
   transition: opacity .4s ease-in;
@@ -54,12 +58,21 @@ body{
   margin-top: 20px;
   }
   
+  .progress-bar{
+      height: 4px !important;
+  }
   #distancing{
     width: 40%;
   }
+  .footer{
+      font-size: .8em;
+  }
+  .citation{
+      font-size: .8em;
+  }
   
   .title{
-      margin-top: 8vh;
+      margin-top: 7vh;
   }
   .question img{
   width: 100% !important;
@@ -75,14 +88,15 @@ body{
       padding: 10px;
   }
   #welcome .answer{
-      bottom: 18vh;
+      bottom: 17vh;
   }
   
   .answer_multiple{
     position: absolute;
-    bottom: 14vh;
+    bottom: 16vh;
     margin: auto;
-    left: 5vw;
+    left: 6vw;
+    font-size: 1.1em;
     width: 85% !important;
    }
    
@@ -137,8 +151,8 @@ h2{
 }
 
 .list{
-    margin-top: 2em;
-    margin-bottom: -2em;
+    margin-top: 1.5em;
+    margin-bottom: -1.5em;
 }
 .list li{
     margin-top: .5em;
@@ -267,6 +281,19 @@ h2{
   width: 550px;
 }
 
+.back_btn{
+    background: white;
+    border-radius: 2px;
+    border: solid 1px lightgrey;
+    color: grey;
+}
+.forward_btn{
+    background: white;
+    border-radius: 2px;
+    border: solid 1px lightgrey;
+    color: grey;
+}
+
   #distancing{
     z-index:-1;
     position: absolute;
@@ -277,9 +304,20 @@ h2{
 #success {
   color: white;
 }
+#success .title{
+    font-weight: bold;
+}
+
+#success .description{
+    margin-bottom: 5em;
+}
 
 #success span{
   font-size: 20px;
+  background: white;
+  color: black;
+  padding: 2px 10px;
+  border-radius: 4px;
 }
 
 .welcome_screen{
@@ -312,7 +350,8 @@ h2{
 .progress-bar {
   height: 6px;
   border-radius: 1px;
-  background-color: #33A1DE;
+  background-color: #5fb5e5;
+  /* 33A1DE */
   background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
   background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
   background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));

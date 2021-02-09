@@ -135,7 +135,7 @@ var EnglishData = {
                             "Citation":"<span class='inline-italic'>Citation: <a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>https://www.cdc.gov/coronavirus</a></span>"
                             },
                         {"Title": "Have you been tested for COVID-19 over the past 7 days?",
-                            "Options":["1. No, I  have not been tested in the past 7 days. ","2. Yes, I have been tested in the last 7 days, but I am waiting for the results","3. Yes, I have been tested in the last 7 days and my test was positive.","4. Yes, I have been tested in the last 7 days and my test was negative."]
+                            "Options":["No, I  have not been tested in the past 7 days. ","Yes, I have been tested in the last 7 days, but I am waiting for the results","Yes, I have been tested in the last 7 days and my test was positive.","Yes, I have been tested in the last 7 days and my test was negative."]
                             },
                         {"Title":"Within the past 14 days, have you been caring for or in close physical contact with:",
                            "Description":"<br>Anyone who is known to have laboratory-confirmed COVID-19?<br><br>OR<br><br>Anyone who has any symptoms consistent with COVID-19?",
