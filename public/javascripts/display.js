@@ -157,7 +157,7 @@ var EnglishData = {
                     {"Title":"Based on the information that you have shared, please stay home.","Description":"HR will reach out to you to discuss next steps."},
                     {"Title":"Please stay home, in accordance with the Calfiiornia Public Health Department advisory.","Description":"travelers traveling into California should self-quarantine for 10 days after arrival. <a href='https://covid19.ca.gov/travel/'>https://covid19.ca.gov/travel/</a>"}
                     ],
-  "Failure_Error":"If you believe that you received this message in error,  please contact HR at humanresources@mwacademy.org and await further instructions."
+  "Failure_Error":"If you believe that you received this message in error,  please contact HR at <a href='mailto:humanresources@mwacademy.org'>humanresources@mwacademy.org</a> and await further instructions."
 }
 
 /* Spanish language Data */

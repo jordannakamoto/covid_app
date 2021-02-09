@@ -90,6 +90,16 @@ body{
   #welcome .answer{
       bottom: 17vh;
   }
+  .result_screen{
+      width: 80% !important;
+      padding: 20px;
+  }
+  .result_screen .title{
+      margin-top: 0px;
+  }
+  .result_screen p{
+      padding: 10px;
+  }
   
   .answer_multiple{
     position: absolute;
