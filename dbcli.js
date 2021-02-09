@@ -31,4 +31,13 @@ program
     });
     
     
+ program
+    .command('set idle')
+    .alias('si')
+    .description('Sets idle users based on todays date')
+    .action(() => {
+        sUtil.setIdle();
+        console.log("Succesful users set to idle")
+    });
+    
  program.parse(process.argv);

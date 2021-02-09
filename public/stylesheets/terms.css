@@ -1,0 +1,63 @@
+/* terms.css */
+
+body{
+  width: 610px;
+  margin: auto;
+  font-family: Arial;
+}
+
+p{
+    font-size: 14px;
+}
+#header{
+  text-align: center;
+  margin-bottom: 2em;
+}
+#title{
+  margin-bottom: 2em;
+  font-family: Arial;
+}
+
+#button-area{
+  margin-top: 2em;
+  text-align: right;
+}
+
+#continue-btn{
+    color:rgba(28, 190, 131, 1);
+	background-color: transparent;
+	border:1px solid rgba(28, 190, 131, 1);
+	border-radius:10px;
+    padding: 5px 10px;
+    outline: none;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all .3s;
+    margin-right: 40px;
+    box-shadow:0 5px 10px -10px rgba(0,0,0,.4);
+}
+
+#continue-btn:hover{
+    color: white;
+    background-color:rgba(28, 190, 131, 1);
+}
+
+img{
+  margin: auto;
+  margin-top: 2em;
+  width: 60px;
+  opacity: .6;
+}
+h3 {
+  text-align: center;
+}
+
+.inline-bold-underline{
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.inline-bold-italic{
+  font-weight: bold;
+  font-style: italic;
+}

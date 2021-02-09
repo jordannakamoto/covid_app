@@ -100,7 +100,7 @@ function answersToSubmission(){
     submission["Last Name"] = userLast;
     submission["Date"] = formatted_date;
     submission["Time"] = formatted_time;
-    submission["Status"] = success;   // this value holds "Failed" if failed.
+    submission["Status"] = flag; 
     
     for(i = 0; i < answers.length ; i++){
       submission["Question "+(i+1)] = answers[i];
@@ -254,6 +254,10 @@ function setLanguage(language){
       
       init_choice_btns(); // Create handlers and add next-slide logic to multiple choice buttons logic
         
+      // Populate Success screen
+      $('#success .title').text(data["Success"].Title)
+      $('#success .description').text(data["Success"].Description)
+      
       // Populate Failure screens
       for(i = 0; i < data["Failures"].length; i++){
         n = i+1;
@@ -471,7 +475,7 @@ function checkAnswers(){
   }
   else{
     showScreen("Success");
-    updateState(user_state);
+    updateState("0");
   }
 }
 

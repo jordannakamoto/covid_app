@@ -16,11 +16,11 @@ const UserSchema = new mongoose.Schema({
     hash: String,
     salt: String,
     key: String,
-    _isNew: Boolean,            // naming conflict so we need _
     alerts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Alert'
     }],
+    note: String,
     
     // Employee properties
     name: Object, // first and last name keys
@@ -56,7 +56,6 @@ const AlertSchema = new mongoose.Schema({
         ref: 'User'
     },
     date: String,
-    note: String,
     state: String             // new, in-progress, completed
 });
 

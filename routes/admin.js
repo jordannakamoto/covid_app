@@ -4,10 +4,14 @@ const User = connection.models.User;
 const Alert = connection.models.Alert;
 const UserList = connection.models.UserList;
 const sUtil = require('../lib/scheduleUtil.js');
+const isAdmin = require('./authMiddleware').isAdmin;
 
 var express = require('express');
 var router = express.Router();
 var sheet = require('../lib/spreadsheet.js');
+
+/* check for admin */
+router.use(isAdmin);
 
 /* GET */
 router.get('/', function(req, res, next) {
@@ -74,6 +78,13 @@ router.get('/users/group/:group', function(req,res){
     }
 });
 
+//get list of groups
+router.get('/users/groups', function(req,res){
+    User.distinct('group').then((list)=> res.send(list));
+});
+
+
+
 // get list of today's scheduled Users (active and inactive)
 router.get('/users/scheduled/:day', function(req,res){
     var key = req.params.day;
@@ -95,8 +106,23 @@ router.get('/users/scheduled/:day', function(req,res){
     }
 });
 
-module.exports = router;
+/* Application API */
 
-function isAdmin(user){
-    
-}
+// Set Expected for the day
+router.get('/test/setExpected',function(req,res){
+    sUtil.setExpected();
+})
+
+// Set Expected for the day
+router.get('/test/setIdle',function(req,res){
+    sUtil.setIdle();
+})
+
+// Add users from Google Sheet
+router.get('/addFromSheet', function(req, res) {
+  var row = req.body;
+  sheet.createUsers();
+});
+
+
+module.exports = router;    

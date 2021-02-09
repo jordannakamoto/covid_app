@@ -33,6 +33,20 @@ function populateGroups(){
     
 }
 
+$("#add-from-sheet").click(()=>{
+    $.ajax({
+      type : "GET",
+      contentType : "application/json",
+      url : "/admin/addFromSheet",
+      dataType : 'json',
+      success : function() {
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+      }
+    });
+})
+
 function populateGroups2(){
     $.ajax({
       type : "GET",

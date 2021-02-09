@@ -28,7 +28,7 @@ const sessionStore = new MongoStore({ mongooseConnection: connection, collection
 //setup midnight event
 const job = schedule.scheduleJob('0 0 * * *', () => {
     var today = new Date().getDay();
-
+    sUtil.setIdle();
     sUtil.setExpected();
 
 })

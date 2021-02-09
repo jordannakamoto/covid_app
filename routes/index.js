@@ -4,13 +4,14 @@ const connection = require('../config/database');
 const User = connection.models.User;
 const Alert = connection.models.Alert;
 const nameList = require('../lists/namelist.js');
+const isAuth = require('./authMiddleware').isAuth;
 
 var express = require('express');
 var router = express.Router();
 var sheet = require('../lib/spreadsheet.js');
 
 /* POST */
-router.post('/login', passport.authenticate('local' , {failureRedirect: '/login', successRedirect: '/dst'}));
+router.post('/login', passport.authenticate('local' , {failureRedirect: '/login', successRedirect: '/'}));
 
 // register
 // Create new user with uname, pw, name from request body
@@ -59,6 +60,9 @@ router.post('/register-*', function(req,res,next) {
 // Get Index Rules
 router.get('',function(req,res,next){
     if(req.user){
+        if(req.user.state == "new"){
+            res.redirect('/terms');
+        }
         res.redirect('/dst');
     }
     else{
@@ -66,6 +70,21 @@ router.get('',function(req,res,next){
     }
     
     
+});
+
+router.get('/terms',function(req,res,next){
+        res.render('terms',{title:'Acknowledgement'})
+});
+
+router.get('/activate',function(req,res,next){
+        User.findOne({_id:req.user._id})
+            .then((user)=> {
+                user.state = "expected";
+                user.save();
+                
+                });
+        
+        res.redirect('/');   
 });
 
 
@@ -163,13 +182,8 @@ router.post('/newAlert', function (req,res,next){
 // Post completed form data to Google Sheets
 router.post('/toGoogle', function(req, res) {
   var row = req.body
+  console.log(row);
   sheet.postRow(row);
 });
-
-router.get('/admin/addFromSheet', function(req, res) {
-  var row = req.body
-  sheet.createUsers();
-});
-
 
 module.exports = router;
