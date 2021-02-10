@@ -5,6 +5,7 @@ $('#field_group').text("students");
 $('#field_vacDoc').text("google.com/myDoc");
 
 var currentUser = {};
+var isPopulated = false;
 var searchQuery;
 var searchIndex;
 var keyCombo = false;
@@ -95,16 +96,28 @@ $( "#search-input" ).keydown(function(event) {
 });
 
 $( "#search-input" ).keyup(function(event) {
+    let keycode = (event.keyCode ? event.keyCode : event.which);
     // hmmmm
     var isWordCharacter = event.key.length === 1;
+    
+    // if enter is pressed
+    if(keycode == '13') {
+        console.log(searchIndex);
+        if(searchIndex["First"].length > 0 || searchIndex["Last"].length > 0){
+            $('#search-results li').eq(0).addClass("results-hovered");
+            if(searchIndex["First"].length > 0 ){
+                updateCard(searchIndex["First"][0]._id);
+            }
+            
+            animateTransition();
+        }
+    }
     
     if(keyCombo == true){
         if(!isWordCharacter)
             keyCombo = false;
         return;
     }
-    
-    let keycode = (event.keyCode ? event.keyCode : event.which);
     
     setTimeout(function() { // get value after event loop. In other words, the state of input after keypress
         // Possibly not needed in keyup vs keypressed
@@ -115,18 +128,16 @@ $( "#search-input" ).keyup(function(event) {
          
              // perform db lookup if the string length is 2.... TODO: also detect paste
         if(searchQuery.length == 2){
-            getSearchIndex(searchQuery);
+            if(!isPopulated)
+                getSearchIndex(searchQuery);
+            isPopulated = true;
         }
         else if(searchQuery.length < 2){
             updateAutoComplete("clear");
+            isPopulated = false;
         }
     }, 0);
    
-    // if enter is pressed
-    if(keycode == '13') {
-        //ajax request
-        animateTransition();
-    }
     
     function getSearchIndex(query){
         var _query = {"query":query};
@@ -148,7 +159,8 @@ $( "#search-input" ).keyup(function(event) {
     }
     
     function updateAutoComplete(_option){
-        var AC_field = $('#search-results');
+        // AC -> AutoComplete
+        var AC_field = $('#search-results ul');
         
         if(_option == "clear"){
             AC_field.children().remove();
@@ -166,22 +178,61 @@ $( "#search-input" ).keyup(function(event) {
                 AC_field.append('<li>' + nameStr +  '</li>');
         }
     }
-    
-    function animateTransition(){
-        $('#card-group').slideDown(500);
-            $('#card-group').css("transform", "scale(.98)");
-            $('#expandable').css("opacity","0");
-            setTimeout(function(){
-                $('#card-group').css("box-shadow","0 10px 15px -5px rgba(0,0,0,.2)") 
-            }, 200); 
-            setTimeout(function(){
-                $('#expandable').css("opacity",".2");
-                $('#expandable').hover(()=>{$('#expandable').css("opacity","1")});
-            }, 400); 
-    }
 });
 
-// Tracks visibility of saveBtn but also if document is in a saveable state.
+function animateTransition(){
+    $('#card-group').slideDown(500);
+        $('#card-group').css("transform", "scale(.98)");
+        $('#expandable').css("opacity","0");
+        setTimeout(function(){
+            $('#card-group').css("box-shadow","0 10px 15px -5px rgba(0,0,0,.2)") 
+        }, 200); 
+        setTimeout(function(){
+            $('#expandable').css("opacity",".2");
+            $('#expandable').hover(()=>{$('#expandable').css("opacity","1")});
+        }, 400); 
+}
+
+async function updateCard(userid){
+    
+    return;
+    // ajax call
+    var _query = {"query":userid};
+            $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "users/findById",
+            data: JSON.stringify(_query),
+            dataType: 'json',
+            success: function(data){
+                drawCard(data);
+            },
+            error: function(e){
+                console.log("ERROR: " + e)
+            }
+        });
+        
+     function drawCard(){
+         // set Name
+         // set email phone
+         // set title
+         
+         // set schedule
+         
+         // set data
+         
+         // set note
+         
+         // set alerts
+         
+         
+         
+         
+     }
+}
+
+
+/* Save Button */
 var saveBtn_isVisible = false;
 
 $(".schedule-start").on('keyup', function(){

@@ -79,6 +79,25 @@ body {
     margin-bottom: 2em;
 }
 
+#search-results ul{
+    padding: 0;
+    list-style: none;
+}
+
+#search-results li{
+    padding-left: 12px;
+}
+
+#search-results li:hover{
+    cursor: pointer;
+    border: solid 1px grey;
+}
+
+#search-results li.results-hovered{
+    border: solid 1px grey;
+}
+
+
 .user-menu-option{
   border: none;
   color: grey;

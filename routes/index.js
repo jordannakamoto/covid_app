@@ -165,6 +165,8 @@ router.post('/updateState', function(req,res){
 router.post('/newAlert', function (req,res,next){
     User.findOne({ "_id": req.user._id})
                 .then((user) => {
+                    
+                    // Create Alert with reference to user
                     var foo = new Alert({
                         msg: "Covid Signs",
                         user: user._id,
@@ -172,7 +174,11 @@ router.post('/newAlert', function (req,res,next){
                         state: "new"
                     })
                     foo.save();
+                    
+                    // Create reference to alert in User
+                    user.alerts.push(foo._id);
                     console.log(foo);
+                    console.log(user);
     });
 });
 
