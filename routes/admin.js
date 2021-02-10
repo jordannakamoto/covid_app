@@ -129,6 +129,7 @@ router.get('/test/setIdle',function(req,res){
 
 // Add users from Google Sheet
 router.get('/addFromSheet', function(req, res) {
+  console.log('hello');
   var row = req.body;
   sheet.createUsers();
 });

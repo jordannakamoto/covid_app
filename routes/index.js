@@ -26,6 +26,8 @@ router.post('/register-*', function(req,res,next) {
     var _key = req.originalUrl;   // employee code from url
     _key = _key.split('-')[1];
     
+    console.log(_key);
+
     if (_key){
         User.findOne({ key: _key})
                 .then((user) => {

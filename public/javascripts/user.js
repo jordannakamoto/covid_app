@@ -65,7 +65,6 @@ function populateGroup(group){
       url : "/admin/users/group/"+group,
       dataType : 'json',
       success : function(data) {
-          console.log(data);
           for(i = 0; i < data.length; i++){
             var userStr;
             userStr = data[i].name.First + " " + data[i].name.Last;
@@ -312,4 +311,20 @@ function setExpandable() {
 }
 
 /* end Expandable */
+
+/* add from sheet*/
+$('#add-from-sheet').click(()=>{
+    $.ajax({
+      type : "GET",
+      contentType : "application/json",
+      url : "/admin/addFromSheet",
+      dataType : 'json',
+      success : function(data) {
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+      }
+    });
+   
+})
 

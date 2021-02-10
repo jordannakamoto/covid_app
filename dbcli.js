@@ -1,6 +1,7 @@
 const  {program} = require('commander');
 const connection = require('./config/database');
 const sUtil = require('./lib/scheduleUtil.js');
+const uUtil = require('./lib/User.js');
 
 program
     .command('clear users')
@@ -38,6 +39,15 @@ program
     .action(() => {
         sUtil.setIdle();
         console.log("Succesful users set to idle")
+    });
+    
+ program
+    .command('create jordan')
+    .alias('cj')
+    .description('Create root user')
+    .action(() => {
+        uUtil.createJordan();
+        console.log("Jordan created.. please register with key - 'jordan'")
     });
     
  program.parse(process.argv);

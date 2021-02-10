@@ -42,6 +42,7 @@ body {
   margin-bottom: 1em;
   color: grey;
 }
+
 #nav-menu li:hover{
   color: blue;
   cursor: pointer;

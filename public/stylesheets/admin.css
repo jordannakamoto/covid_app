@@ -2,6 +2,10 @@
   color: grey;
 }
 
+#nav-menu li a{
+  color: grey;
+}
+
 a:-webkit-any-link {
     text-decoration: none;
 }
