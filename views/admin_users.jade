@@ -1,5 +1,6 @@
 extends layout
 block css
+    link(href='https://fonts.googleapis.com/css2?family=Cutive+Mono:wght@300;400&display=swap' rel='stylesheet')
     link(rel='stylesheet', href='/stylesheets/admin.css')
     link(rel='stylesheet', href='/stylesheets/admin_users.css')
 block content
@@ -23,91 +24,75 @@ block content
           li 
             a Drive
       #panel-area
-        #expandable
-          h2
-            button(aria-expanded='false')#sw School-wide
-              svg(aria-hidden='true', focusable='false', viewBox='0 0 10 10')
-                rect.vert(height='8', width='2', y='1', x='4')
-                rect(height='2', width='8', y='4', x='1')
-          div(hidden)
-            ul#sw-ul
-          h2
-            button(aria-expanded='false')#us US 1
-              svg(aria-hidden='true', focusable='false', viewBox='0 0 10 10')
-                rect.vert(height='8', width='2', y='1', x='4')
-                rect(height='2', width='8', y='4', x='1')
-          div(hidden)
-            ul#us-ul
-        #profile-card(style='display: none')
-          .flex-container.heading
-            #employee-info flex-item
-              h2#fullname Gordon Nikimutu
-              span#email gnikimutu@gmail.com
-              br
-              span#phone 123-410-2923
-            .flex-item(style='text-align: right')
-              span.activity-label On Campus
-              br
-              span.state-label Passed
-          hr
-          #schedule-container.flex-container
-            .flex-item
-              .schedule
-                .section-heading Schedule
-                .flex-schedule
-                  .schedule-segment
-                    .schedule-day(style='border-top: solid 1px lightgrey') Monday
-                    input#mon-s.schedule-start(style='border-top: solid 1px lightgrey')
-                  .schedule-segment
-                    .schedule-day Tuesday
-                    input#tue-s.schedule-start
-                  .schedule-segment
-                    .schedule-day Wednesday
-                    input#wed-s.schedule-start
-                  .schedule-segment
-                    .schedule-day Thursday
-                    input#thu-s.schedule-start
-                  .schedule-segment
-                    .schedule-day Friday
-                    input#fri-s.schedule-start
-                  .schedule-segment
-                    .schedule-day Saturday
-                    input#sat-s.schedule-start
-                  .schedule-segment
-                    .schedule-day Sunday
-                    input#sun-s.schedule-start(value='9')
-              .attributes-list.
-                
-                
-            .flex-item
-              #data-listing
-                br
+        #card-group
+            #profile-card
+              .flex-container.heading
+                #employee-info.flex-item
+                  h2#fullname Gordon Nikimutu
+                  span#email gnikimutu@gmail.com
+                  br
+                  span#phone 123-410-2923
+                .flex-item(style='text-align: right')
+                    .schedule
+                        // .section-heading(style="text-align:right") Schedule
+                        .flex-schedule
+                          .schedule-segment
+                            .schedule-day(style="border-left: solid 2px lightblue") M
+                          .schedule-segment
+                            .schedule-day T
+                          .schedule-segment
+                            .schedule-day W
+                          .schedule-segment
+                            .schedule-day Th
+                          .schedule-segment
+                            .schedule-day F
+                          .schedule-segment
+                            .schedule-day S
+                          .schedule-segment
+                            .schedule-day Su
+              hr
+              #schedule-container.flex-container
+                 
+                .flex-item
+
+                        #data-listing
+                            ul
+                              li
+                                span.data-label activity:
+                                span.activity-label On Campus
+                              li
+                                span.data-label status:
+                                span.state-label Passed
+                              br
+                              li
+                                span.data-label username: 
+                                span#field_username
+                              li
+                                span.data-label group: 
+                                span#field_group
+                              li
+                                span.data-label key: 
+                                span#field_key 42069blazeit
+                                br
+                              li
+                                span.data-label docs:
+                                #docIcon-anchor
+                                  img#field_vacDoc(src='http://icons.iconarchive.com/icons/papirus-team/papirus-apps/512/google-docs-icon.png', width='24')
+
+                .flex-item(style="border-left:solid 1px lightgrey; flex-grow: 2")
+                    span.data-label#note-label  note:
+                                        br
+                                        textarea#user_note
+            #alert-history(style="background:#fafafa")
+                .section-heading(style="color: grey") Alerts
                 ul
-                  li
-                    span.data-label username: 
-                    span#field_username
-                  li
-                    span.data-label group: 
-                    span#field_group
-                    br
-                  li
-                    span.data-label vaccination doc:
-                    #docIcon-anchor
-                      img#field_vacDoc(src='http://icons.iconarchive.com/icons/papirus-team/papirus-apps/512/google-docs-icon.png', width='24')
-                  br
-                  br
-                  li
-                    span note:
-                    br
-                    textarea#user_note
-          #alert-history
-            .section-heading Alert History
-            ul
-              li.alert-urgent 2/15 - Covid Signs reported
-              li 2/14 - Did not complete DST
+                  li.alert-urgent 2/15 - Covid Signs reported
+                  li 2/14 - Did not complete DST 
+        #expandable
       #right-bar
         #search-area
           input#search-input(placeholder='Search Users')
+          #search-results
           img.search-icon(src='http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png', width='48')
           button#add-from-sheet.user-menu-option > Add Users from Sheet
           // button.user-menu-option > Delete This User

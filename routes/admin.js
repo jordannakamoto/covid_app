@@ -83,7 +83,16 @@ router.get('/users/groups', function(req,res){
     User.distinct('group').then((list)=> res.send(list));
 });
 
+// search users
+router.post('/users/search', async function(req,res){
+    var query = req.body.query;
+    var result = {"First":[],"Last":[]}
+    // var result = {first: [], last: []} // arrays to hold first name matches and last name matches
+    result["First"] = await User.find({'name.First': {"$regex": "^" + query, "$options": "ix"}}).select('name , _id'); // starts with query and ignore case and whitespace | then select only name and id fields
+    result["Last"] = await User.find({'name.Last': {"$regex": "^" + query, "$options": "ix"}}).select('name , _id'); ; // starts with query and ignore case and whitespace | then select only name and id fields
 
+    res.send(result);
+});
 
 // get list of today's scheduled Users (active and inactive)
 router.get('/users/scheduled/:day', function(req,res){
