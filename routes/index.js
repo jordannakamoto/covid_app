@@ -30,8 +30,8 @@ router.post('/register-*', function(req,res,next) {
 
     if (_key){
         User.findOne({ key: _key})
-                .then((user) => {
                     console.log(user.key);
+                .then((user) => {
                     console.log(_key);
                     if (!user) {
                         res.redirect('/registration-error');
@@ -64,7 +64,8 @@ router.get('',function(req,res,next){
         if(req.user.state == "new"){
             res.redirect('/terms');
         }
-        res.redirect('/dst');
+        else
+            res.redirect('/dst');
     }
     else{
         res.redirect('/login');
