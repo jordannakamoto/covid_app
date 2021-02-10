@@ -30,7 +30,6 @@ router.post('/register-*', function(req,res,next) {
 
     if (_key){
         User.findOne({ key: _key})
-                    console.log(user.key);
                 .then((user) => {
                     console.log(_key);
                     if (!user) {
