@@ -27,9 +27,11 @@ const sessionStore = new MongoStore({ mongooseConnection: connection, collection
 
 //setup midnight event
 const job = schedule.scheduleJob('0 0 * * *', () => {
-    var today = new Date().getDay();
-    sUtil.setIdle();
-    sUtil.setExpected();
+
+    sUtil.setIdle();                        // set yesterday's expected list to idle
+    setTimeout(function(){        // after 5 minutes, reset and repopulate expected list
+        sUtil.setExpected()
+    }, 1000 * 60 * 5)
 
 })
 app.use(session({
