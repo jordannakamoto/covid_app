@@ -35,11 +35,11 @@ body{
 
 
 @media only screen and (max-width: 600px){
-  body{
-  width: 95%;
-  margin-top: 20px;
-  background: red;
-  }
+  /* body{ */
+  /* width: 95%; */
+  /* margin-top: 20px; */
+  /* background: red; */
+  /* } */
   .question{
       padding: 0px 20px !important;
   }
@@ -49,12 +49,7 @@ body{
   .answer{
     width: 90% !important;
   }
-}
-
-
-/* high resolution mobile display */
-@media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){
-  body{
+   body{
   width: 95%;
   margin-top: 20px;
   }
@@ -139,6 +134,11 @@ body{
     
   }
 }
+
+
+/* high resolution mobile display */
+/* @media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){ */
+ 
 
 .answer{
     text-align: center;
