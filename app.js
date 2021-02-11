@@ -50,12 +50,12 @@ require('./config/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((req, res, next) => {
-    console.log(req.session);
-    console.log(req.user);
-    console.log(req)
-    next();
-});
+// app.use((req, res, next) => {
+    // console.log(req.session);
+    // console.log(req.user);
+    // console.log(req)
+    // next();
+// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

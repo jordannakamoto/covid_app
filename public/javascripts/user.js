@@ -1,7 +1,5 @@
 //<img src="https://i.ibb.co/nsp3Yw9/cloud-1.png" width="16px">
 
-$('#field_username').text("jordan");
-$('#field_group').text("students");
 $('#field_vacDoc').text("google.com/myDoc");
 
 var currentUser = {};
@@ -71,8 +69,9 @@ function populateGroup(group){
             userStr += ' - ' + data[i].title;
             userStr += ' | ' +data[i].state;
             var groupStr = group.replace(/\s/g, '');
-            $('#'+groupStr + '-ul').append('<li>' + userStr + '</li>')
+            $('#'+groupStr + '-ul').append('<li class="list-item-emp" id="' + data[i]._id + '">' + userStr + '</li>')
           }
+          $('#'+groupStr + '-ul li').click((e)=>{updateCard(e.target.id); animateTransition()});
       },
       error : function(e) {
         console.log("ERROR: ", e);
@@ -107,6 +106,8 @@ $( "#search-input" ).keyup(function(event) {
             if(searchIndex["First"].length > 0 ){
                 updateCard(searchIndex["First"][0]._id);
             }
+            else
+                updateCard(searchIndex["Last"][0]._id)
             
             animateTransition();
         }
@@ -124,9 +125,10 @@ $( "#search-input" ).keyup(function(event) {
         // this is the value after the keypress
          searchQuery = $('#search-input').val();
          
-         
+         console.log(isPopulated);
+         console.log(searchQuery.length);
              // perform db lookup if the string length is 2.... TODO: also detect paste
-        if(searchQuery.length == 2){
+        if(searchQuery.length <= 4 && searchQuery.length > 1){
             if(!isPopulated)
                 getSearchIndex(searchQuery);
             isPopulated = true;
@@ -192,11 +194,11 @@ function animateTransition(){
         }, 400); 
 }
 
-async function updateCard(userid){
-    
-    return;
+function updateCard(userid){
     // ajax call
+    $('#field_username').text('none');
     var _query = {"query":userid};
+    console.log(_query)
             $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -211,22 +213,38 @@ async function updateCard(userid){
             }
         });
         
-     function drawCard(){
-         // set Name
-         // set email phone
-         // set title
+     function drawCard(user){
+         currentuser = user; 
          
-         // set schedule
+         //Populate DOM
+         $('#fullname').text (currentuser.name.First + " " + currentuser.name.Last);
+         $('#email').text(currentuser.email);
+         $('#phone').text(currentuser.phone);
          
-         // set data
+            // schedule
+        $('.flex-schedule').children().removeClass('highlighted');
+        var i = 0;
+        for(key in currentuser.Schedule){
+            if(currentuser.Schedule[key] == true){
+                console.log(i);
+                $('.flex-schedule').children().eq(i).toggleClass('highlighted');
+                i++;
+            }
+        }
+        
+            // labels
+         $('.activity-label').text(currentuser.activity);
+         $('.state-label').text(currentuser.state);
          
-         // set note
+            // data
+         $('#field_title').text(currentuser.title);
+         $('#field_username').text(currentuser.username);
+         $('#field_group').text(currentuser.group);
+         $('#field_key').text(currentuser.key);
          
-         // set alerts
+         $('#user_note').val(currentuser.note);
          
-         
-         
-         
+         // if doc? load doc link
      }
 }
 

@@ -148,6 +148,7 @@ body {
 #card-group{
     float:left;
     height: 100%;
+    width: 100%;
     display: none;
     transform: scale(.92);
     transition: box-shadow .3s ease-out;
@@ -216,15 +217,13 @@ body {
 }
 
 .schedule-day{
-  background: white;
-  /* #E6F2FF */
   color: #02336B;
-  /* border-right: solid 1px lightblue; */
-  /* border-bottom: solid 1px lightblue; */
-  /* border-top: solid 1px lightblue; */
   width: 1em;  
   padding: 4px 6px 4px 6px;
+}
 
+.schedule-segment.highlighted{
+    background: #deeff5;
 }
 
 .schedule-start{
@@ -266,10 +265,13 @@ body {
   min-width: 100px;
 }
 
-#data-listing li{
-  margin-bottom: 10px;
-  white-space: nowrap;
+#data-listing {
+    max-width: 240px;
 }
+#data-listing li{
+  margin-bottom: 10px;  
+}
+
 
 #note-label{
     color: lightgrey;
@@ -473,3 +475,7 @@ input:focus{
 }
 
 /* page styles */
+
+.list-item-emp:hover{
+    cursor:pointer;
+}

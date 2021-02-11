@@ -34,10 +34,9 @@ block content
                   span#phone 123-410-2923
                 .flex-item(style='text-align: right')
                     .schedule
-                        // .section-heading(style="text-align:right") Schedule
                         .flex-schedule
                           .schedule-segment
-                            .schedule-day(style="border-left: solid 2px lightblue") M
+                            .schedule-day M
                           .schedule-segment
                             .schedule-day T
                           .schedule-segment
@@ -65,6 +64,9 @@ block content
                                 span.state-label Passed
                               br
                               li
+                                span.data-label title: 
+                                span#field_title
+                              li
                                 span.data-label username: 
                                 span#field_username
                               li
@@ -72,12 +74,12 @@ block content
                                 span#field_group
                               li
                                 span.data-label key: 
-                                span#field_key asdg89
+                                span#field_key
                                 br
-                              li
-                                span.data-label docs:
-                                #docIcon-anchor
-                                  img#field_vacDoc(src='http://icons.iconarchive.com/icons/papirus-team/papirus-apps/512/google-docs-icon.png', width='24')
+                              // li
+                                // span.data-label docs:
+                                // #docIcon-anchor
+                                  // img#field_vacDoc(src='http://icons.iconarchive.com/icons/papirus-team/papirus-apps/512/google-docs-icon.png', width='24')
 
                 .flex-item(style="border-left:solid 1px lightgrey; flex-grow: 2")
                     span.data-label#note-label  note:
@@ -85,9 +87,9 @@ block content
                                         textarea#user_note
             #alert-history(style="background:#fafafa")
                 .section-heading(style="color: grey") Alerts
-                ul
-                  li.alert-urgent 2/15 - Covid Signs reported
-                  li 2/14 - Did not complete DST 
+                // ul
+                  // li.alert-urgent 2/15 - Covid Signs reported
+                  // li 2/14 - Did not complete DST 
         #expandable
       #right-bar
         #search-area

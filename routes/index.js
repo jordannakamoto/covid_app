@@ -101,7 +101,7 @@ router.get('/register-*',function(req,res,next){
                     else if(user.activity != "inactive"){
                         console.log("Error: User " + user.username +" already exists");
                         res.header('Error', "User exists"); // this isn't handled, need to make the request through ajax
-                        res.redirect('/registration-error');
+                        res.redirect('/');
                     }
                     else{
                         res.render('register', {title:'Daily Screening Tool'});
@@ -186,7 +186,8 @@ router.post('/newAlert', function (req,res,next){
 
 // Post completed form data to Google Sheets
 router.post('/toGoogle', function(req, res) {
-  var row = req.body
+  var row = req.body;
+  console.log("Row sent to Google:")
   console.log(row);
   sheet.postRow(row);
 });

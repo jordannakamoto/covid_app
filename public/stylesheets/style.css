@@ -38,6 +38,7 @@ body{
   body{
   width: 95%;
   margin-top: 20px;
+  background: red;
   }
   .question{
       padding: 0px 20px !important;

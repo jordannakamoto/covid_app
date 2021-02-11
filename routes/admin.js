@@ -83,6 +83,20 @@ router.get('/users/groups', function(req,res){
     User.distinct('group').then((list)=> res.send(list));
 });
 
+router.post('/users/findById',function(req,res){
+    var id = req.body.query;
+    User.findOne({'_id': id})
+        .then((user)=>{
+            console.log(user);
+            if(user){
+                res.send(user);
+            }
+            else{
+                console.log("error");
+            }
+        })
+})
+
 // search users
 router.post('/users/search', async function(req,res){
     var query = req.body.query;
@@ -118,11 +132,12 @@ router.get('/users/scheduled/:day', function(req,res){
 /* Application API */
 
 // Set Expected for the day
+// <<<--- Implement Observer pattern
 router.get('/test/setExpected',function(req,res){
     sUtil.setExpected();
 })
 
-// Set Expected for the day
+// Set Idle from yesterday
 router.get('/test/setIdle',function(req,res){
     sUtil.setIdle();
 })

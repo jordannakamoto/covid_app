@@ -8,7 +8,7 @@ program
     .alias('cu')
     .description('Clears User collection')
     .action(() =>{
-        connection.collections.users.deleteMany({});
+        connection.collections.users.deleteMany({"accessLevel":null});
         console.log("All Users deleted from connected database");
     });
     
