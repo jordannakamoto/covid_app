@@ -73,10 +73,12 @@ router.get('',function(req,res,next){
     
 });
 
+    
 router.get('/terms',function(req,res,next){
         res.render('terms',{title:'Acknowledgement'})
 });
 
+// Activate user and check their schedule for today
 router.get('/activate',function(req,res,next){
         User.findOne({_id:req.user._id})
             .then((user)=> {
@@ -162,6 +164,7 @@ router.post('/updateState', function(req,res){
     
 });
 
+
 // Post alert to database
 // requires name and date parameters
 router.post('/newAlert', function (req,res,next){
@@ -173,7 +176,8 @@ router.post('/newAlert', function (req,res,next){
                         msg: "Covid Signs",
                         user: user._id,
                         date: req.body.date,
-                        state: "new"
+                        state: "new",
+                        answers: req.body.answers
                     })
                     foo.save();
                     

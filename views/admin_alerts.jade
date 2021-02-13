@@ -16,8 +16,8 @@ block content
             a(href='/admin/users') Users
           li
             a(href='https://docs.google.com/spreadsheets/d/1yJWURjN98gjpeAfh9GAb1UTLecJh2kmIHof3m946Jvw/edit?usp=sharing' target='_blank')  Sheet 
-          li 
-            a Drive
+          // li 
+            // a Drive
       #slider-panel
         #slider-nav
           ul
@@ -30,15 +30,19 @@ block content
             #table-inprogress.alerts-table
             #table-completed.alerts-table
       #right-bar
-        #search-area
-          input#search-input(placeholder='Search Alerts')
-          img.search-icon(src='http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png' width='48')
+        #user-info
+        // #search-area
+          // input#search-input(placeholder='Search Alerts')
+          // img.search-icon(src='http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png' width='48')
+        br
         #note-area
-          | Note:
-          textarea#note
-        #actions-area
-          span Actions
-          ul#actions-history
+          textarea#note(placeholder="note")
+        // #actions-area
+          // span Actions
+          // ul#actions-history
+        button#change-activity Change Status
+        br
+        button#false-positive Set as False Positive
 
 block scripts
     script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/swipe/2.0.0/swipe.min.js')

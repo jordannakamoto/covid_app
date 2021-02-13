@@ -10,8 +10,48 @@ a:-webkit-any-link {
     text-decoration: none;
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){
+@media only screen and (max-width: 600px){
     #navigation-area{
-        display: none;
+        display: none !important;
     }
+}
+
+
+#navigation-area{
+  position: fixed;
+  background: white;
+  height: 100%;
+  width: 160px;
+  float: left;
+  padding: 20px;
+  padding-top: 60px;
+  padding-left: 60px;
+  margin-right: 120px;
+}
+
+#nav-menu{
+  border-left: solid 3px #D5ECFF;
+  list-style: none;
+}
+
+#nav-menu span{
+  position: relative;
+  right: 20px;
+  top: -20px;
+  font-weight: bold;
+  
+}
+
+#nav-menu li{
+  margin-bottom: 1em;
+}
+
+#nav-menu li a{
+  color: grey;
+  text-decoration: none;
+}
+#nav-menu li a:hover{
+  color: blue;
+  cursor: pointer;
+  transition: color .3s;
 }

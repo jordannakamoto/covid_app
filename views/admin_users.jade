@@ -5,11 +5,6 @@ block css
     link(rel='stylesheet', href='/stylesheets/admin_users.css')
 block content
     #parent-container
-      #misc
-        #user_saved
-          .exit_user_saved
-          .small-circle
-          | User Saved
       #navigation-area
         ul#nav-menu
           span Navigation
@@ -21,57 +16,57 @@ block content
             a(href='/admin/users') Users
           li
             a(href='https://docs.google.com/spreadsheets/d/1yJWURjN98gjpeAfh9GAb1UTLecJh2kmIHof3m946Jvw/edit?usp=sharing' target='_blank')  Sheet 
-          li 
-            a Drive
+          // li 
+            // a Drive
       #panel-area
         #card-group
             #profile-card
               .flex-container.heading
                 #employee-info.flex-item
-                  h2#fullname Gordon Nikimutu
-                  span#email gnikimutu@gmail.com
+                  h2#fullname
+                  input#email
                   br
-                  span#phone 123-410-2923
+                  input#phone
                 .flex-item(style='text-align: right')
                     .schedule
                         .flex-schedule
-                          .schedule-segment
+                          .schedule-segment#M
                             .schedule-day M
-                          .schedule-segment
+                          .schedule-segment#T
                             .schedule-day T
-                          .schedule-segment
+                          .schedule-segment#W
                             .schedule-day W
-                          .schedule-segment
+                          .schedule-segment#Th
                             .schedule-day Th
-                          .schedule-segment
+                          .schedule-segment#F
                             .schedule-day F
-                          .schedule-segment
+                          .schedule-segment#S
                             .schedule-day S
-                          .schedule-segment
+                          .schedule-segment#Su
                             .schedule-day Su
-              hr
+
               #schedule-container.flex-container
                  
-                .flex-item
+                .flex-item#data-area
 
                         #data-listing
                             ul
                               li
-                                span.data-label activity:
-                                span.activity-label On Campus
-                              li
                                 span.data-label status:
-                                span.state-label Passed
+                                span#activity
+                              li
+                                span.data-label state:
+                                span#state
                               br
                               li
                                 span.data-label title: 
-                                span#field_title
+                                input#title
+                              li
+                                span.data-label group: 
+                                input#group
                               li
                                 span.data-label username: 
                                 span#field_username
-                              li
-                                span.data-label group: 
-                                span#field_group
                               li
                                 span.data-label key: 
                                 span#field_key
@@ -81,10 +76,10 @@ block content
                                 // #docIcon-anchor
                                   // img#field_vacDoc(src='http://icons.iconarchive.com/icons/papirus-team/papirus-apps/512/google-docs-icon.png', width='24')
 
-                .flex-item(style="border-left:solid 1px lightgrey; flex-grow: 2")
+                .flex-item#note-area
                     span.data-label#note-label  note:
-                                        br
-                                        textarea#user_note
+                    br
+                    textarea#note
             #alert-history(style="background:#fafafa")
                 .section-heading(style="color: grey") Alerts
                 // ul
@@ -98,10 +93,13 @@ block content
             ul
           img.search-icon(src='http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png', width='48')
           button#add-from-sheet.user-menu-option > Add Users from Sheet
-          // button.user-menu-option > Delete This User
+          #change-list 
+            ul Pending Changes
+           #user_saved
+              .exit_user_saved
+              .small-circle
+              | User Saved
         #actions-area
-          // #submit_btn_anchor
-            // button#submit_changes_btn > Save Changes
           span Actions
           ul#actions-history
 block scripts       

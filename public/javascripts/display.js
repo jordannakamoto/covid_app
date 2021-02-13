@@ -14,8 +14,7 @@ var answers = [];
 var date = new Date(Date.now());
 var formatted_date;
 var formatted_time;
-var flag = 0; // What question has been answered Yes and what failure screen will show
-// flags - 0 clear - 1 symptoms 2 no test 3 exposure 4 travel 5 positive test
+var flag = "clear";  // What question has been answered Yes and what failure screen will show
 
 var submitted = false;
 var user_state;
@@ -56,7 +55,7 @@ function initUser(){
     function setAppState(){
         if(user_state == "expected"){
         }
-        else if(user_state == 0){
+        else if(user_state == "clear"){
             $('#welcome').hide();
             showScreen("Success");
         }
@@ -102,9 +101,11 @@ function answersToSubmission(){
     submission["Time"] = formatted_time;
     submission["Status"] = flag; 
     
-    for(i = 0; i < answers.length ; i++){
-      submission["Question "+(i+1)] = answers[i];
-    }
+    submission["Testing"] = answers[1];
+    submission["Contact"] = answers[2];
+    submission["Temperature"] = answers[3];
+    submission["Symptoms"] = answers[4];
+    submission["Travel Outside of CA"] = answers[5];
     
     // Post to Google
     $.ajax({
@@ -250,8 +251,8 @@ function setLanguage(language, setting){
       }
       
       // Setup failure flags for Multiple Choice - Question 2
-      $('#2 .answer_multiple button').eq(0).attr("data-flag","2"); // haven't been tested
-      $('#2 .answer_multiple button').eq(2).attr("data-flag","5"); // recieved positive test result - flag for test result
+      $('#2 .answer_multiple button').eq(0).attr("data-flag","no test"); // haven't been tested
+      $('#2 .answer_multiple button').eq(2).attr("data-flag","positive test"); // recieved positive test result - flag for test result
       
       init_choice_btns(); // Create handlers and add next-slide logic to multiple choice buttons logic
         
@@ -312,6 +313,19 @@ $(".forward_btn").click(function() {
  update();
 })
 
+
+// Continue buton
+$(".continue_btn").click(function() {  
+ // $("#result_" + current_question).text("Continue
+ answers[current_question - 1] = "Ok";
+ var domObject = items[current_question - 1];
+ var domObject_next = items[next_question - 1];
+ $(this).addClass("selected");
+ $(this).siblings().removeClass("selected");
+ goTo_next(domObject, domObject_next);
+
+ update();
+})
 
 // Yes answer button                      
 $(".yes_btn").click(function() {  
@@ -435,19 +449,19 @@ function showScreen(screen){
   else if (screen == "Failure"){
      if(user_state == "expected")   // Unless this screen is being re-loaded
         postAlert();
-    if(flag == 1){ // Symptoms
+    if(flag == "symptoms"){ // Symptoms
     $("#failure1").fadeIn(500);
     }
-    if(flag == 2){ // No test
+    if(flag == "no test"){ // No test
     $("#failure2").fadeIn(500);
     }
-    if(flag == 3){ // Exposure
+    if(flag == "exposure"){ // Exposure
     $("#failure3").fadeIn(500);
     }
-    if(flag == 4){ // Travel
+    if(flag == "travel"){ // Travel
     $("#failure4").fadeIn(500);
     }
-    if(flag == 5){ // Positive Test
+    if(flag == "positive test"){ // Positive Test
     $("#failure1").fadeIn(500);
     }
   }
@@ -457,23 +471,25 @@ function showScreen(screen){
 // Determine DST result
 function checkAnswers(){
   for(i = 0; i < answers.length; i++){
-    if(answers[i] == "Yes" && flag == 0){
+    if(answers[i] == "Yes" && flag == "clear"){   // If theres a positive indicator and flag hasn't been set
       if(i==2)
-          flag = 3 // Question 3, flag for exposure
+          flag = "exposure" // Question 3, flag for exposure
+      if(i==3)
+          flag = "temperature" // Flag for symptoms
+      if(i==4)
+          flag = "symptoms" // Flag for symptoms
       if(i==5)
-          flag = 4 // Question 5, flag for travel
-      else
-          flag = 1 // Flag for symptoms
+          flag = "travel" // Question 5, flag for travel
+
     }
   }
-  if(flag != 0){
+  if(flag != "clear"){
     showScreen("Failure");
-    user_state = flag.toString();
-    updateState(user_state);
+    updateState(flag);
   }
   else{
     showScreen("Success");
-    updateState("0");
+    updateState("clear");
   }
 }
 
@@ -502,7 +518,8 @@ function changeUserLanguage(_lang) {
 function postAlert() {
         // Change Language of User
     var obj = {
-                    "date": formatted_date
+                    "date": formatted_date,
+                    "answers": answers
     };
     $.ajax({
       type : "POST",
@@ -521,7 +538,7 @@ function postAlert() {
 // Update User State - post submit
 function updateState(_state){
     var obj = {"state": _state}
-    $.ajax({
+      $.ajax({
       type : "POST",
       contentType : "application/json",
       url : "/updatestate",

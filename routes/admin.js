@@ -39,7 +39,7 @@ router.post('/alerts/update',function(req,res){
 
 // returns new alerts
 router.get('/alerts/new', function(req,res){
-    Alert.find({ "state":  "new"}).populate('user', 'name phone')
+    Alert.find({ "state":  "new"}).populate('user', 'name phone note')
                 .then((alerts) => {
                     res.send(alerts);
     });
@@ -47,7 +47,7 @@ router.get('/alerts/new', function(req,res){
 
 // returns inprogress alerts
 router.get('/alerts/inprogress', function(req,res){
-    Alert.find({ "state":  "inprogress"}).populate('user', 'name phone')
+    Alert.find({ "state":  "inprogress"}).populate('user', 'name phone note')
                 .then((alerts) => {
                     res.send(alerts);
     });
@@ -55,7 +55,7 @@ router.get('/alerts/inprogress', function(req,res){
 
 // returns completed alerts
 router.get('/alerts/completed', function(req,res){
-    Alert.find({ "state":  "completed"}).populate('user', 'name phone')
+    Alert.find({ "state":  "completed"}).populate('user', 'name phone note')
                 .then((alerts) => {
                     res.send(alerts);
     });
@@ -96,6 +96,24 @@ router.post('/users/findById',function(req,res){
             }
         })
 })
+
+// updateOne user
+router.post('/users/updateOne', async function(req,res){
+    var update = req.body;
+    console.log(update);
+    User.updateOne({_id : update._id},  
+        update, function (err, docs) { 
+        if (err){ 
+            console.log(err) 
+            res.send({error:"error"})
+        } 
+        else{ 
+            // If we update the schedule, and its today, gotta run the setExpectedOne
+            console.log("Updated User : ", docs); 
+            res.send({success:"woohooo"});
+        } 
+    }); 
+});
 
 // search users
 router.post('/users/search', async function(req,res){

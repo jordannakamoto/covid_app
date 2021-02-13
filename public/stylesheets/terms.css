@@ -1,6 +1,6 @@
 /* terms.css */
 
-@media only screen and (-webkit-min-device-pixel-ratio: 3) and (max-width:1920px){
+@media only screen and (max-width: 600px){
     body{
         width: 100% !important;
     }
@@ -15,8 +15,9 @@
         padding: 6px 12px !important;
         margin-right: 0 !important;
     }
-
+     
 }
+
 
 body{
   width: 610px;

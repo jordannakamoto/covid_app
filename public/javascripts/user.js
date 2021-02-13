@@ -2,13 +2,14 @@
 
 $('#field_vacDoc').text("google.com/myDoc");
 
-var currentUser = {};
+var currentuser = {};
 var isPopulated = false;
 var searchQuery;
 var searchIndex;
 var keyCombo = false;
-/* Ajax Populate Group Expandables */
+var changes = {};
 
+/* Ajax Populate Group Expandables */
 
 
 function initExpandable(){
@@ -21,7 +22,7 @@ function initExpandable(){
             console.log(data); 
             for(const group in data){
                 var groupStr = data[group].replace(/\s/g, '');
-                var insert = htmlStringify(groupStr);
+                var insert = htmlStringify(data[group], groupStr);
                 $('#expandable').append(insert);
                 var selector = $('#'+groupStr);
                 selector.mouseenter(function(){
@@ -40,9 +41,9 @@ function initExpandable(){
             console.log("ERROR: " + e)
         }
     });
-    function htmlStringify(groupname){
+    function htmlStringify(groupspace, groupname){
             var htmlStr = "<h2>"
-            htmlStr += '    <button aria-expanded="false" id="'+groupname+'">'+groupname;
+            htmlStr += '    <button aria-expanded="false" id="'+groupname+'">'+groupspace;
             htmlStr += '        <svg aria-hidden="true" focusable="false" viewBox="0 0 10 10">';
             htmlStr += '            <rect class="vert" height="8" width="2" y="1" x="4"></rect>';
             htmlStr += '            <rect height="2" width="8" y="4" x="1"></rect>';
@@ -150,7 +151,6 @@ $( "#search-input" ).keyup(function(event) {
             dataType: 'json',
             success: function(data){
                 searchIndex = data;
-                console.log(searchIndex);
                 updateAutoComplete();
             },
             error: function(e){
@@ -217,62 +217,38 @@ function updateCard(userid){
          currentuser = user; 
          
          //Populate DOM
-         $('#fullname').text (currentuser.name.First + " " + currentuser.name.Last);
-         $('#email').text(currentuser.email);
-         $('#phone').text(currentuser.phone);
+         $('#fullname').text(currentuser.name.First + " " + currentuser.name.Last);
+         $('#email').val(currentuser.email);
+         $('#phone').val(currentuser.phone);
          
             // schedule
         $('.flex-schedule').children().removeClass('highlighted');
-        var i = 0;
+        var i = 0;  
         for(key in currentuser.Schedule){
             if(currentuser.Schedule[key] == true){
-                console.log(i);
-                $('.flex-schedule').children().eq(i).toggleClass('highlighted');
+                $('#' + key).toggleClass('highlighted');
                 i++;
             }
         }
+        $('.flex-schedule').children().off();
+        $('.flex-schedule').children().click(function(){
+            $(this).toggleClass('highlighted')
+            updateSchedule();
+        });
         
             // labels
-         $('.activity-label').text(currentuser.activity);
-         $('.state-label').text(currentuser.state);
+         $('#activity').text(currentuser.activity);
+         $('#state').text(currentuser.state);
          
             // data
-         $('#field_title').text(currentuser.title);
+         $('#title').val(currentuser.title);
+         $('#group').val(currentuser.group);
          $('#field_username').text(currentuser.username);
-         $('#field_group').text(currentuser.group);
          $('#field_key').text(currentuser.key);
          
-         $('#user_note').val(currentuser.note);
-         
+         $('#note').val(currentuser.note);         
          // if doc? load doc link
      }
-}
-
-
-/* Save Button */
-var saveBtn_isVisible = false;
-
-$(".schedule-start").on('keyup', function(){
-  if(saveBtn_isVisible == false){
-    showSaveBtn();
-  }
-});
-$(".schedule-end").on('keyup', function(){
-  if(saveBtn_isVisible == false){
-    showSaveBtn();
-  }
-});
-$("#user_note").on('keyup paste', function() {
-  if(saveBtn_isVisible == false){
-    showSaveBtn();
-  }
-});
-
-// rename to save state tracking
-function showSaveBtn(){
-  setTimeout(function(){    
-      saveBtn_isVisible = true;
-  }, 300)
 }
 
 /* CTRL-S Shortcut */
@@ -288,25 +264,64 @@ $(document).keydown(function(e) {
 
 $(document).keydown(function(e) {
     if (ctrl_down && (e.keyCode == s_key)) {
-        if(saveBtn_isVisible == true)
-          submitChanges();
-        // Your code
+        if(Object.keys(changes).length > 0){
+            submitChanges();
+        }
         return false;
     }
 }); 
 /* end CTRL-S */
 
 function submitChanges(){
-  setTimeout(function(){
-      $("#user_saved").fadeIn(200);
-      $("#user_saved").css("top","54px");
-      saveBtn_isVisible = false;
-  }, 200)
-  setTimeout(function(){
-      $("#user_saved").fadeOut(500);
-      },1400)
-      $("#user_saved").css("top","48px");
- 
+    if(noteChanged){
+        currentuser.note = $('#note').val();
+        changes.note = currentuser.note;
+    }
+    if(scheduleChanged){
+        var week = ['M','T','W','Th','F','S','Su']
+        var i = 0;
+        $('.flex-schedule').children().each(function(){
+            if($(this).hasClass('highlighted'))
+                currentuser.Schedule[week[i]] = true;
+            else
+                currentuser.Schedule[week[i]] = false;
+            i++;
+        }); // At this point, currentuser.Schedule is holding the updated schedule
+        delete changes["schedule"]; // delete the temporary schedule object
+        changes["Schedule"] = currentuser.Schedule;
+    }
+    
+    changes["_id"]=currentuser._id;
+    // console.log(changes);
+    
+  // AJAX Post  - UpdateUser
+    $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "users/updateOne",
+            data: JSON.stringify(changes),
+            dataType: 'json',
+            success: function(data){
+                notification();
+                resetChangeList();
+            },
+            error: function(e){
+                alert("ERROR: " + e);
+            }
+        });
+    
+  // DOM notification  
+      function notification(){
+          setTimeout(function(){
+              $("#user_saved").fadeIn(200);
+              $("#user_saved").css("top","54px");
+          }, 200)
+          setTimeout(function(){
+              $("#user_saved").fadeOut(500);
+              },1400)
+              $("#user_saved").css("top","48px");
+      }
+     
 }
 
 /* Expandable */
@@ -346,3 +361,76 @@ $('#add-from-sheet').click(()=>{
    
 })
 
+$('#profile-card input').change(function(e){
+    var field = e.target.id;
+    var val = e.target.value;
+    
+    // Change Message   
+    changes[field] = val;
+    
+    updateChangeList();
+})
+
+var noteChanged = false; // hold a variable so we don't have to update every key up
+$('#note').on('keyup paste',function(){  
+    if(!noteChanged){
+        if($(this).val() != currentuser.note){
+            noteChanged = true;
+            changes["note"] = 0;
+            updateChangeList();            
+        }
+    }
+})
+
+var scheduleChanged = false;
+function updateSchedule(){ // called by onclick of schedule buttons
+        if(!scheduleChanged){
+            changes["schedule"] = 0;
+            scheduleChanged = true; // still needs conversion to Schedule object
+            updateChangeList();
+        }
+}
+
+var changeList = $('#change-list ul');
+
+function updateChangeList(){
+
+    if(changeList.is(':hidden')){
+        changeList.show();
+    }
+    
+    changeList.children().remove();
+    for(item in changes){
+        if(item == "note" || item=="schedule")
+            changeList.append('<br><li>' + item + ": " + "edited" + '</li>');
+        else{
+            var msg  = "<br> " + currentuser[item] +  " > "  + changes[item];
+            changeList.append('<br><li>' + item + ": " + msg + '</li>');
+        }
+    } 
+}
+
+function resetChangeList(){
+    changes = {};
+    noteChanged = false;
+    scheduleChanged = false;
+    changeList.hide();
+}
+
+$("#card-group").click((e)=>{
+    e.stopPropagation();
+})
+$("#right-bar").click((e)=>{
+    e.stopPropagation();
+})
+
+$(document).click(function(){
+    if(Object.keys(currentuser).length > 0){
+        $('#card-group').slideUp();
+        for (var param in currentuser) delete currentuser[param];
+        setTimeout(()=>{
+            $('#expandable').css("opacity","1");
+        },500)
+        
+    }
+})

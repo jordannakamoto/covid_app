@@ -13,42 +13,6 @@ body {
   height: 100%;
 }
 
-#navigation-area{
-  position: fixed;
-  background: white;
-  height: 100%;
-  width: 160px;
-  float: left;
-  padding: 20px;
-  padding-top: 60px;
-  padding-left: 60px;
-  margin-right: 120px;
-}
-
-#nav-menu{
-  border-left: solid 3px #D5ECFF;
-  list-style: none;
-}   
-
-#nav-menu span{
-  position: relative;
-  right: 20px;
-  top: -20px;
-  font-weight: bold;
-  
-}
-
-#nav-menu li{
-  margin-bottom: 1em;
-  color: grey;
-}
-
-#nav-menu li:hover{
-  color: blue;
-  cursor: pointer;
-  transition: color .3s;
-}
-
 #right-bar{
   display: flex;
   flex-direction: column;
@@ -96,6 +60,24 @@ body {
 
 #search-results li.results-hovered{
     border: solid 1px grey;
+}
+
+#change-list ul{
+    list-style: none;
+    display: none;
+    margin-top: 2em;
+    font-size: 14px;
+    padding: 0;
+    overflow: auto;
+}
+
+#change-list li:before{
+    content: "+";
+    padding-right: 5px;
+}
+
+#change-list{
+    position: relative;
 }
 
 
@@ -162,12 +144,16 @@ body {
   width: 100%;
   height: 390px;
   padding: 20px;
-  margin-top: 20px;
   background: white;
   box-sizing: border-box;
 }
 
+#email{
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
 #fullname{
+    font-weight: bold;
    font-size: 18px;
   margin-bottom: .5em;
 }
@@ -186,44 +172,73 @@ body {
 }
 
 .flex-item{
-  flex-grow: 1;
+    flex-grow: 1;
+}
+#data-area{
+    flex-grow: 0;
+    margin-right: 10px;
+}
+#note-area{
+    border-left:solid 1px lightgrey;
+    flex-grow: 2;
+}
+#activity:hover{
+  cursor: pointer;
 }
 
-.activity-label{
+#state:hover{
+  cursor: pointer;
+}
+
+#activity{
   background: #B4EDBA;
   color: #407045;
   border-radius: 5px;
   padding: 3px 6px;
 }
 
-.state-label{
+#state{
   background: #eee;
   color: #616161;
   border-radius: 5px;
   padding: 3px 6px;
 }
 
+/* doesn't actually hold the schedule*/
+#schedule-container{
+        border-top: solid 1px #eee;
+        margin-top: 1em;
+        padding-top: 1em;
+}
+
 /* Schedule */
 .flex-schedule{
   display: flex;
   flex-direction: row;
-  margin-left: 10px;
+  margin-right:10px;
   margin-top: 28px;
   float: right;
 }
 .schedule-segment{
   display: flex;
+  text-align: center;
+  color: #262626;
   flex-direction: column;
+  font-size: 18px;
+  border-bottom:  solid 2px white;
+}
+.schedule-segment:hover{
+  cursor: pointer;
+  transition: all .2s;
 }
 
 .schedule-day{
-  color: #02336B;
   width: 1em;  
   padding: 4px 6px 4px 6px;
 }
 
 .schedule-segment.highlighted{
-    background: #deeff5;
+    border-color: #0EBFE9;
 }
 
 .schedule-start{
@@ -231,7 +246,7 @@ body {
   border: none;
   border-right: solid 1px lightgrey;
   border-bottom: solid 1px lightgrey;
-  padding: 4px 6px 4px 6px;
+  padding: 4px 6px 2px 6px;
   width: 1em;
   height: 1em;
 }
@@ -266,7 +281,7 @@ body {
 }
 
 #data-listing {
-    max-width: 240px;
+    max-width: 260px;
 }
 #data-listing li{
   margin-bottom: 10px;  
@@ -277,25 +292,25 @@ body {
     color: lightgrey;
     margin-left: 5px;
 }
-#user_note{
+#note{
   font-family: 'Source Sans Pro';
   font-size: 14px;
   line-height: 1.5em;
-  margin-top: 10px;
   min-height: 10em;
   resize: none;
-  width: 140%;
+  width: 300px;
   padding: 15px;
+  padding-top: 0;
   border: none;
 }
 
-#user_note::-webkit-scrollbar {
+#note::-webkit-scrollbar {
   width: 8px;
 	border-radius: 10px;
 	background-color: #F5F5F5;
 }
 
-#user_note::-webkit-scrollbar-thumb {
+#note::-webkit-scrollbar-thumb {
     width: 8px;
 	border-radius: 10px;
 	background-color: lightgrey;
@@ -310,6 +325,31 @@ input[type=text],textarea{
   /* padding: 3px 0px 3px 3px; */
   /* border: 1px solid rgba(81, 203, 238, 1); */
 /* } */
+
+
+#employee-info input{
+    padding: 0;
+    display: inline-block;
+    width: 100%;
+    border: none;
+}
+#employee-info input:focus{
+  transition: border-color .2s;
+  border-bottom: solid 1px blue;
+  outline: none;
+}
+
+#data-listing input{
+    padding: 0;
+    display: inline-block;
+    width: 140px;
+    border: none;
+}
+#data-listing input:focus{
+  transition: border-color .2s;
+  border-bottom: solid 1px blue;
+  outline: none;
+}
 
 input:focus{
   transition: border-color .2s;
@@ -344,24 +384,14 @@ input:focus{
 #submit_btn_anchor{
   position: relative;
 }
-#submit_changes_btn{
-  font-size: 16px;
-  position: absolute;
-  top: -80px;
-  color: grey;
-  border: none;
-  border-bottom: dotted 1px grey;
-  outline: none;
-  transition: right .6s ease-in;
-  transition: color .3;
-}
 
 #user_saved{
   z-index: 2;
   display: none;
   position: absolute;
-  top: 48px;
-  left: 388px;
+  top: -50px;
+  right: 0;
+  left: 0px;
   color: white;
   background: #4169e1;
   padding: 8px 20px 8px 20px;
@@ -416,15 +446,15 @@ input:focus{
   font-size: 13px;
 }
 
-.scheduled{
-        height: 10px;
-        width: 10px;
-        border-radius: 50%;
-        background: grey;
-        top:  10px;
-        right: 12px;
-        position: absolute;
-}
+/* .scheduled{ */
+        /* height: 10px; */
+        /* width: 10px; */
+        /* border-radius: 50%; */
+        /* background: grey; */
+        /* top:  10px; */
+        /* right: 12px; */
+        /* position: absolute; */
+/* } */
 
 #expandable{
     transition: opacity .2s;

@@ -25,55 +25,19 @@ body {
   height: 100%;
 }
 
-#navigation-area{
-  background: white;
-  height: 100%;
-  width: 160px;
-  float: left;
-  padding: 20px;
-  padding-top: 60px;
-  padding-left: 60px;
-  margin-right: 120px;
-}
-
-#nav-menu{
-  border-left: solid 3px #D5ECFF;
-  list-style: none;
-}
-
-#nav-menu span{
-  position: relative;
-  right: 20px;
-  top: -20px;
-  font-weight: bold;
-  
-}
-
-#nav-menu li{
-  margin-bottom: 1em;
-}
-
-#nav-menu li a{
-  color: grey;
-  text-decoration: none;
-}
-#nav-menu li a:hover{
-  color: blue;
-  cursor: pointer;
-  transition: color .3s;
-}
-
 /* Dash Panel */
 
 #dash-panel{
+    margin-left: 300px;
   margin-top: 80px;
   width: 920px;
-  height: 320px;
+  height: 300px;
   float: left;
   display: flex;
 }
 
 #dash-table{
+  margin-left:400px;
   float: left;
   width: 920px;
   color: #4f4f4f;
@@ -114,8 +78,9 @@ background-image: linear-gradient(360deg, #fb6f6c  0%, #FB7D7A 44%);
 
 #completion-widget{
   background-color: #ffffff;
-background-image: linear-gradient(315deg, #ffffff 0%, #eee 74%);
-  color: grey;
+  background-image: linear-gradient(315deg, #ffffff 0%, #eee 74%);
+  border: solid 2px #A8A8A8;
+  color: #383838;
 }
 #visitor-widget{
   background-color: #b0b0b0;

@@ -56,7 +56,8 @@ const AlertSchema = new mongoose.Schema({
         ref: 'User'
     },
     date: String,
-    state: String             // new, in-progress, completed
+    state: String ,    // new, in-progress, completed
+    answers: []
 });
 
 const UserListSchema = new mongoose.Schema({

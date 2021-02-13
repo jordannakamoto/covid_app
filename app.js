@@ -34,6 +34,7 @@ const job = schedule.scheduleJob('0 0 * * *', () => {
     }, 1000 * 60 * 5)
 
 })
+
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
@@ -43,6 +44,17 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24
     }
 }));
+
+//HTTPS redirect
+app.use (function (req, res, next) {
+        if (req.secure) {
+                // request was via https, so do no special handling
+                next();
+        } else {
+                // request was via http, so redirect to https
+                res.redirect('https://' + req.headers.host + req.url);
+        }
+});
 
 // passport authentication
 require('./config/passport');
