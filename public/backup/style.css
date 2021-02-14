@@ -203,6 +203,7 @@ h2{
 
 .question {
   margin-bottom: 30px;
+  min-height: 400px;
 }
 
 .question img{

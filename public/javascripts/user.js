@@ -72,7 +72,7 @@ function populateGroup(group){
             var groupStr = group.replace(/\s/g, '');
             $('#'+groupStr + '-ul').append('<li class="list-item-emp" id="' + data[i]._id + '">' + userStr + '</li>')
           }
-          $('#'+groupStr + '-ul li').click((e)=>{updateCard(e.target.id); animateTransition()});
+          $('#'+groupStr + '-ul li').click((e)=>{updateCard(e.target.id); openProfile()});
       },
       error : function(e) {
         console.log("ERROR: ", e);
@@ -110,7 +110,7 @@ $( "#search-input" ).keyup(function(event) {
             else
                 updateCard(searchIndex["Last"][0]._id)
             
-            animateTransition();
+            openProfile();
         }
     }
     
@@ -181,7 +181,7 @@ $( "#search-input" ).keyup(function(event) {
     }
 });
 
-function animateTransition(){
+function openProfile(){
     $('#card-group').slideDown(500);
         $('#card-group').css("transform", "scale(.98)");
         $('#expandable').css("opacity","0");
@@ -428,6 +428,7 @@ $(document).click(function(){
     if(Object.keys(currentuser).length > 0){
         $('#card-group').slideUp();
         for (var param in currentuser) delete currentuser[param];
+        resetChangeList();
         setTimeout(()=>{
             $('#expandable').css("opacity","1");
         },500)

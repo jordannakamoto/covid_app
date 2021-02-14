@@ -28,7 +28,7 @@ body {
 /* Dash Panel */
 
 #dash-panel{
-    margin-left: 300px;
+   margin-left: 300px;
   margin-top: 80px;
   width: 920px;
   height: 300px;
@@ -59,16 +59,16 @@ body {
   cursor: pointer;
 }
 #alerts-widget{
-  background-color: #FA8072;
-background-image: linear-gradient(360deg, #fb6f6c  0%, #FB7D7A 44%);
-  color: white;
+  border: solid 3px #FA8072;
+  box-shadow:0 5px 15px -10px red;
+  /* background-image: linear-gradient(360deg, #fb6f6c  0%, #FB7D7A 44%); */
+  color: grey;
 }
 
 #alerts-widget.no-new{
-  background: none !important;
+  border-color: lightgrey !important;
   color: lightgrey;
   box-sizing: border-box;
-  border: solid 3px lightgrey;
   box-shadow: none;
 }
 .are-inprogress{

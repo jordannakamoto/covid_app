@@ -509,3 +509,7 @@ input:focus{
 .list-item-emp:hover{
     cursor:pointer;
 }
+
+.user-menu-option:hover{
+    cursor:pointer;
+}

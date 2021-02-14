@@ -41,12 +41,12 @@ app.use(session({
     saveUninitialized: true,
     store: sessionStore,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24
+        maxAge: 1000 * 60 * 60 * 24 * 100
     }
 }));
 
-//HTTPS redirect
-app.use (requireHTTPS);
+// //HTTPS redirect
+// app.use (requireHTTPS);
 
 function requireHTTPS(req, res, next) {
   // The 'x-forwarded-proto' check is for Heroku

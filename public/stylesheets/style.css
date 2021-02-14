@@ -5,6 +5,7 @@ body{
   margin: auto;
   margin-top: 100px;
   }
+  
 
 #language{  
     display: none;
@@ -35,20 +36,17 @@ body{
 
 
 @media only screen and (max-width: 600px){
-  /* body{ */
-  /* width: 95%; */
-  /* margin-top: 20px; */
-  /* background: red; */
-  /* } */
+  .spacer{
+    height: 0em !important;
+}
   .question{
       padding: 0px 20px !important;
   }
   .question img{
   width: 100% !important;
+  
 }
-  .answer{
-    width: 90% !important;
-  }
+
    body{
   width: 95%;
   margin-top: 20px;
@@ -76,6 +74,10 @@ body{
   .answer{
     position: fixed;
     bottom: 10vh;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 90% !important;
   }
   #welcome{
       padding: 20px;
@@ -102,6 +104,7 @@ body{
     bottom: 16vh;
     margin: auto;
     left: 6vw;
+    padding: 8px 10px !important;
     font-size: 1.1em;
     width: 85% !important;
    }
@@ -147,7 +150,7 @@ body{
 }
 
 .answer_multiple{
-    width: 60%;
+    width: 70%;
 }
 
 #submit{
@@ -206,13 +209,6 @@ h2{
   right: 10px;
 }
 
-.choice_btn{
-  width: 100%;
-  text-align: left;
-  margin-bottom: 5px;
-  color: #686868 !important;
-}
-
 .answer .btn{
   margin: .3em;
   margin-top: 1.5em;
@@ -258,6 +254,14 @@ h2{
 .start_btn:hover{
   background: #f8f8f8;
   border-color: #e8e8e8;
+}
+
+.choice_btn{
+  width: 100%;
+  text-align: left;
+  margin-bottom: 5px;
+  color: #686868 !important;
+  padding: 14px 16px;
 }
 
 .green_btn{
@@ -375,4 +379,8 @@ h2{
   -moz-transition-property: width, background-color;
   -o-transition-property: width, background-color;
   transition-property: width, 
+}
+
+.spacer{
+    height: 1.5em;
 }

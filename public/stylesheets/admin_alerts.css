@@ -56,13 +56,13 @@ body {
 }
 
 .slider-tab{
-  padding: 5px 15px;
+  padding: 6px 14px;
   border-radius: 5px;
   transition: background .4s;
 }
 
 .slider-tab.active{
-  background: lightgrey;
+  background: #d8d8d8;
 }
 
 .swipe {
