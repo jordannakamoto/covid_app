@@ -289,7 +289,7 @@ $(".move-btn").click(function(e){
     updateSliderLabels()
 })
 
-}, 300);
+}, 600);
 
 function updateSliderLabels(){
     $('#new_btn').text("New (" + newAlerts.length + ")");
