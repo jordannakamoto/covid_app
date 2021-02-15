@@ -125,7 +125,7 @@ function answersToSubmission(){
 
 /* English language Data */
 var EnglishData = {
-  "Welcome": {"Title": "Welcome %userFirst to The Making Waves Academy daily employee wellness screen",
+  "Welcome": {"Title": "Welcome %userFirst to The HR Manager daily employee wellness screen",
               "Description": "You must complete this survey before leaving your home to report for work. Your answers will be used to determine if you are clear to work for the day.",},
   "Confirmation": {"Title": "Please enter your Employee ID Number below:"},
   "Questions":[
