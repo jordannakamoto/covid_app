@@ -20,18 +20,41 @@
 }
 
 #legal{
-    margin-top: -1em;
+    margin-top: -2em;
 }
 
 body{
-  opacity: 0;
+  font-family:  'hk_groteskregular','Source Sans Pro', sans-serif;
+}
+
+#splash{
+    text-align: center;
+    font-size: 24px;
+    /* font-weight: bold; */
+    position: absolute;
+    top: 10%;
+    left:-40px;
+    padding: 100px 100px;
+    right: 0;
+    margin: auto;
+    width: 200px;
+}
+#splash img{
+    position: absolute;
+    right: 76px;
+    top: 28%;
+    margin: auto;
+    width: 90px;
+    opacity: .6;
+}
+#agreement{
   position: absolute;
-  top: -.5em;
   left: 0;
   right: 0;
-  width: 610px;
   margin: auto;
-  font-family:  'hk_groteskregular','Source Sans Pro', sans-serif;
+  width: 610px;
+  top: -.5em;
+  opacity: 0;
   transition: all 1s;
 }
 
@@ -44,6 +67,7 @@ p{
 }
 #title{
   margin-bottom: 2em;
+  margin-top: -.5em;
   font-family: Arial;
 }
 
@@ -72,7 +96,7 @@ p{
     background-color:rgba(28, 190, 131, 1);
 }
 
-img{
+#agreement  img{
   margin: auto;
   margin-top: 2em;
   width: 60px;

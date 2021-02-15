@@ -17,12 +17,6 @@ html{
   height: 100%;
 }
 
-body {
-  background: #eee;
-  margin: 0;
-  font-family: Sans-Serif;
-  height: 100%;
-}
 .alert-hovered{
   background: #fafafa;
 }
@@ -286,6 +280,27 @@ input{
     content: '▼';
     position: absolute;
     right: 5px;
+}
+
+#change-list ul{
+    margin-top: 0;
+    list-style: none;
+    padding: 0;
+}
+.flag::before{
+    content: '>';
+    height: 10px;
+    width: 10px;
+    margin-left: -10px;
+    color: grey;        
+    padding-right: 10px;
+}
+
+button{
+    border: none;
+    border-bottom: solid 1px #e4e4e4;
+    background: #eee;
+    outline: none;
 }
 
 /* End Right Bar */

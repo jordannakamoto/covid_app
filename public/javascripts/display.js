@@ -156,7 +156,8 @@ var EnglishData = {
   "Failures":[{"Title":"It sounds like your temperature is higher than expected or you may be exhibiting symptoms related to COVID-19.", "Description":"Please seek medical treatment and text your manager to let them know that you are ill and cannot come to work.   HR will reach out to you to discuss next steps."},
                     {"Title":"Since we require weekly testing and you have indicated that you have not taken your weekly test, please stay at home","Description":"HR will reach out to you to discuss next steps."},
                     {"Title":"Based on the information that you have shared, please stay home.","Description":"HR will reach out to you to discuss next steps."},
-                    {"Title":"Please stay home, in accordance with the Calfiiornia Public Health Department advisory.","Description":"travelers traveling into California should self-quarantine for 10 days after arrival. <a href='https://covid19.ca.gov/travel/'>https://covid19.ca.gov/travel/</a>"}
+                    {"Title":"Please stay home, in accordance with the Calfiiornia Public Health Department advisory.","Description":"travelers traveling into California should self-quarantine for 10 days after arrival. <a href='https://covid19.ca.gov/travel/'>https://covid19.ca.gov/travel/</a>"},
+                    {"Title":"You are not scheduled to work today","Description":"Please check back later"}
                     ],
   "Failure_Error":"If you believe that you received this message in error,  please contact HR at <a href='mailto:humanresources@mwacademy.org'>humanresources@mwacademy.org</a> and await further instructions."
 }
@@ -449,7 +450,7 @@ function showScreen(screen){
   else if (screen == "Failure"){
      if(user_state == "expected")   // Unless this screen is being re-loaded
         postAlert();
-    if(flag == "symptoms"){ // Symptoms
+    if(flag == "symptoms" || flag == "temperature"){ // Symptoms
     $("#failure1").fadeIn(500);
     }
     if(flag == "no test"){ // No test
@@ -463,6 +464,14 @@ function showScreen(screen){
     }
     if(flag == "positive test"){ // Positive Test
     $("#failure1").fadeIn(500);
+    }
+    if(flag=="idle"){   // User not scheduled to work today
+    $("#failure5").fadeIn(500);    
+    }
+    if(flag=="idlenew"){   // User registered but not scheduled to work today
+    $("#failure5 .title").text("Thank you for registering");
+    $("#failure5 .description").text("Please save this page and return to complete the Daily Health Screening before your next work day");
+    $("#failure5").fadeIn(500);    
     }
   }
 }

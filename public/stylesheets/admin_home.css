@@ -15,12 +15,6 @@ html{
   height: 100%;
 }
 
-body {
-  background: #eee;
-  margin: 0;
-  font-family: Sans-Serif;
-  height: 100%;
-}
 #parent-container{
   height: 100%;
 }
@@ -28,8 +22,8 @@ body {
 /* Dash Panel */
 
 #dash-panel{
-   margin-left: 300px;
-  margin-top: 80px;
+  margin-left: 280px;
+  margin-top: 40px;
   width: 920px;
   height: 300px;
   float: left;
@@ -48,7 +42,7 @@ body {
   width: 100%;
   height: 200px;
   margin: 2vw;
-  box-shadow:0 5px 15px -10px rgba(0,0,0,1);
+  box-shadow:0 5px 15px -10px `(0,0,0,1);
   border-radius: 4px;
   position: relative;
   transition: transform .3s;
@@ -60,7 +54,6 @@ body {
 }
 #alerts-widget{
   border: solid 3px #FA8072;
-  box-shadow:0 5px 15px -10px red;
   /* background-image: linear-gradient(360deg, #fb6f6c  0%, #FB7D7A 44%); */
   color: grey;
 }

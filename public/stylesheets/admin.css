@@ -16,17 +16,23 @@ a:-webkit-any-link {
     }
 }
 
+body {
+  background: #fafafa;
+  margin: 0;
+  font-family: Sans-Serif;
+  height: 100%;
+}
 
 #navigation-area{
   position: fixed;
   background: white;
   height: 100%;
-  width: 160px;
+  width: 140px;
   float: left;
   padding: 20px;
   padding-top: 60px;
   padding-left: 60px;
-  margin-right: 120px;
+  box-shadow:0 5px 12px -10px rgba(0,0,0,1);
 }
 
 #nav-menu{

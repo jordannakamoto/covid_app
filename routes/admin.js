@@ -85,7 +85,7 @@ router.get('/users/groups', function(req,res){
 
 router.post('/users/findById',function(req,res){
     var id = req.body.query;
-    User.findOne({'_id': id})
+    User.findOne({'_id': id}).populate('alerts')
         .then((user)=>{
             console.log(user);
             if(user){
@@ -100,7 +100,9 @@ router.post('/users/findById',function(req,res){
 // updateOne user
 router.post('/users/updateOne', async function(req,res){
     var update = req.body;
-    console.log(update);
+    var flag = false;
+    if(update.hasOwnProperty('Schedule'))
+        flag = true;
     User.updateOne({_id : update._id},  
         update, function (err, docs) { 
         if (err){ 
@@ -108,6 +110,9 @@ router.post('/users/updateOne', async function(req,res){
             res.send({error:"error"})
         } 
         else{ 
+            if(flag == true){
+                sUtil.setOneExpected(update._id);
+            }
             // If we update the schedule, and its today, gotta run the setExpectedOne
             console.log("Updated User : ", docs); 
             res.send({success:"woohooo"});

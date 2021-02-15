@@ -106,7 +106,7 @@ function populateCompletion(){
             changeFavicon('https://img.icons8.com/emoji/2x/green-circle-emoji.png');
             document.title = "DST - Complete";
             refresh = false;
-            $('#completion-widget').css("background-image","linear-gradient(315deg, #f9ea8f 0%, #aff1da 74%)");
+            // $('#completion-widget').css("border-color","#3299CC ");
         }
         else{
             document.title = "DST - " + percent + "%";

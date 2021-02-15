@@ -6,13 +6,15 @@ const Alert = connection.models.Alert;
 const nameList = require('../lists/namelist.js');
 const isAuth = require('./authMiddleware').isAuth;
 const sUtil = require('../lib/scheduleUtil.js')
+const settings = require('../config/settings.js')
 
 var express = require('express');
 var router = express.Router();
 var sheet = require('../lib/spreadsheet.js');
 
-/* POST */
+// /* POST */
 router.post('/login', passport.authenticate('local' , {failureRedirect: '/login', successRedirect: '/'}));
+
 
 // register
 // Create new user with uname, pw, name from request body
@@ -49,10 +51,17 @@ router.post('/register-*', function(req,res,next) {
                         console.log(user.name.First + " " + user.name.Last + "  successfully updated with username" + user.username);
                         user.activity = "active";
                         user.save();
-                        res.redirect('/login')
+                        req.login(user, function (err) {
+                            if ( ! err ){
+                                res.redirect('/terms');
+                            } else {}
+                                //handle error
+                        })  
+                        // res.redirect('/login')
                     }
                 });
     }
+    
 });
 
 /* GET */
@@ -75,17 +84,22 @@ router.get('',function(req,res,next){
 
     
 router.get('/terms',function(req,res,next){
-        res.render('terms',{title:'Acknowledgement'})
+        res.render('terms',{title:'Acknowledgement',user: req.user.username})
 });
 
 // Activate user and check their schedule for today
 router.get('/activate',function(req,res,next){
-        User.findOne({_id:req.user._id})
-            .then((user)=> {
-                sUtil.setOneExpected(user._id)
-                });
+        if(req.user.state != "new"){
+            res.redirect('/dst');
+        }
+        else{
+            User.findOne({_id:req.user._id})
+                .then((user)=> {
+                    sUtil.setOneExpected(user._id)
+                    res.redirect('/dst');   
+                    });
+        }
         
-        res.redirect('/');   
 });
 
 
@@ -120,15 +134,11 @@ router.get('/registration-error',function(req,res,next){
 
 // render login page at /login
 router.get('/login', function(req,res,next){
-    res.render('login', {title:'Daily Screening Tool'});
+    res.render('login', {title:'Daily Screening Tool', company: settings.companyname});
 });
 
 // render /dst page for questionnaire
 router.get('/dst', function(req, res, next) {
-  if(req.user.state == "idle"){
-      res.send("Sorry, you are not scheduled to work today")
-  }
-  else
     res.render('index', { title: 'Daily Screening Tool' });
 });
 
@@ -183,8 +193,7 @@ router.post('/newAlert', function (req,res,next){
                     
                     // Create reference to alert in User
                     user.alerts.push(foo._id);
-                    console.log(foo);
-                    console.log(user);
+                    user.save();
     });
 });
 

@@ -1,6 +1,9 @@
 // terms.js
-
 setTimeout(function(){
-    $('body').css("opacity","1");
-    $('body').css("top","0");
-}, 400)
+    
+    $('#splash').fadeOut();
+},1800)
+setTimeout(function(){
+    $('#agreement').css("opacity","1");
+    $('#agreement').css("top","0");
+}, 2200)

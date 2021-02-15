@@ -6,6 +6,10 @@ var inprogressAlerts = [];
 var completedAlerts = [];
 var currentTable;
 var selectedAlertData = [];   // holds 0 - alert, 1 - alertArray, 2 - alertIndex
+var user;
+var changes = {};
+
+var noteChanged = false;
 
 var date = new Date(Date.now());
 var formatted_date = formatted_date = date.toLocaleString('en-us', {weekday:'long'}) + " " + (date.getMonth() + 1) + "/" + date.getDate();
@@ -25,18 +29,22 @@ function populateAlerts(){
             newAlerts.push(elem);
             // format answers
             var answersString;
+            
             answersString = "<h5>Testing:</h5>";
-            answersString += '<p>' + elem.answers[1] + '</p>';
-            answersString += "<h5>Exposure:</h5>";
-            answersString += '<p>' + elem.answers[2] + '</p>';
-            answersString += "<h5>Temperature:</h5>";
-            answersString += '<p>' + elem.answers[3] + '</p>';
-            answersString += "<h5>Symptoms:</h5>";
-            answersString += '<p>' + elem.answers[4] + '</p>';
-            answersString += "<h5>Travel outside CA:</h5>";
-            answersString += '<p>' + elem.answers[5] + '</p>';
+            if(elem.answers[1].includes("positive") || elem.answers[1].includes("No"))
+                answersString += '<p class= "flag">' + elem.answers[1] + '</p>';
+            else
+                answersString += '<p>' + elem.answers[1] + '</p>';
             
-            
+            var legend = ["Exposure","Temperature","Symptoms","Travel Outside CA"]
+            for(j = 2; j < 6; j++){
+                answersString += '<h5>'+legend[j-2]+'</h5>'
+                if(elem.answers[j]  == "Yes")
+                    answersString += '<p class="flag">' + elem.answers[j] + '</p>';
+                else
+                    answersString += '<p>' + elem.answers[j] + '</p>';
+            }
+                       
             htmlStr = '<div data-id="'+elem._id+'" class="alert">';
             htmlStr += '\t<div class="alert-body">\n'
             // Add date tag
@@ -51,6 +59,9 @@ function populateAlerts(){
             htmlStr += '\t<div  class="move-btn">🡆</div>' // End Alert Body
             htmlStr += '\t<div class="alert-answers">' + answersString + '</div></div>'
             $("#table-new").append(htmlStr);
+            
+                // $(this).css("background","red")
+                //if($(this).text() == "Yes") alert()
         }
         setupSlider();
         refreshCount();
@@ -66,21 +77,45 @@ function populateAlerts(){
       url : "/admin/alerts/inprogress",
       dataType : 'json',
       success : function(data) {
-         for(i = 0; i < data.length; i++){
+         for(i = 0; i < data.length; i++){            
             var elem = data[i];
             var date = elem.date;
             inprogressAlerts.push(elem);
+            // format answers
+            var answersString;
             
+            answersString = "<h5>Testing:</h5>";
+            if(elem.answers[1].includes("positive") || elem.answers[1].includes("No"))
+                answersString += '<p class= "flag">' + elem.answers[1] + '</p>';
+            else
+                answersString += '<p>' + elem.answers[1] + '</p>';
+            
+            var legend = ["Exposure","Temperature","Symptoms","Travel Outside CA"]
+            for(j = 2; j < 6; j++){
+                answersString += '<h5>'+legend[j-2]+'</h5>'
+                if(elem.answers[j]  == "Yes")
+                    answersString += '<p class="flag">' + elem.answers[j] + '</p>';
+                else
+                    answersString += '<p>' + elem.answers[j] + '</p>';
+            }
+                       
             htmlStr = '<div data-id="'+elem._id+'" class="alert">';
-            // if (date == formatted_date){
-                // htmlStr += '\t<div class="alert-date today">Today</div>'
-            // }
-            // else
-                // htmlStr += '\t<div class="alert-date">' + date + '</div>'
+            htmlStr += '\t<div class="alert-body">\n'
+            // Add date tag
+            if (date == formatted_date){
+                htmlStr += '\t\t<div class="alert-date today">Today</div>'
+            }
+            else
+                htmlStr += '\t\t<div class="alert-date">' + date + '</div>'
+            
             htmlStr += elem.user.name.First + " " + elem.user.name.Last + '  :  '
             htmlStr += elem.user.phone
-            htmlStr += '<div  class="move-btn">🡆</div></div>'
+            htmlStr += '\t<div  class="move-btn">🡆</div>' // End Alert Body
+            htmlStr += '\t<div class="alert-answers">' + answersString + '</div></div>'
             $("#table-inprogress").append(htmlStr);
+            
+                // $(this).css("background","red")
+                //if($(this).text() == "Yes") alert()
         }
         refreshCount();
       },
@@ -155,6 +190,7 @@ function setMouseEvents(){
     $(".alert").click(function(e){
         e.stopPropagation();
         $('.alert').removeClass('selected');
+        $('.alert .alert-answers').slideUp();
         $('.alert').css('opacity','.2');
         $(this).css('opacity','1'); 
         $(this).find('.alert-answers').slideDown(); 
@@ -162,7 +198,7 @@ function setMouseEvents(){
           // Search for alert by the DOM element's data-id
           for(_alert in newAlerts){
               if(newAlerts[_alert]._id == id){
-                 var user = newAlerts[_alert].user;
+                 user = newAlerts[_alert].user;
                  selectedAlertData[0] = newAlerts[_alert];
                  selectedAlertData[1] = newAlerts;
                  selectedAlertData[2] = _alert;
@@ -173,7 +209,7 @@ function setMouseEvents(){
           }
         for(_alert in inprogressAlerts){
               if(inprogressAlerts[_alert]._id ==  id){
-                 var user = inprogressAlerts[_alert].user;
+                 user = inprogressAlerts[_alert].user;
                  selectedAlertData[0] = inprogressAlerts[_alert];
                  selectedAlertData[1] = inprogressAlerts;
                  selectedAlertData[2] = _alert;
@@ -184,7 +220,7 @@ function setMouseEvents(){
           }
         for(_alert in completedAlerts){
               if(completedAlerts[_alert]._id ==  id){
-                 var user = completedAlerts[_alert].user;
+                 user = completedAlerts[_alert].user;
                  selectedAlertData[0] = completedAlerts[_alert];
                  selectedAlertData[1] = completedAlerts;
                  selectedAlertData[2] = _alert;
@@ -284,16 +320,19 @@ function setupSlider(){
 
     $("#new_btn").click(function(){
       window.slider.slide(0, slide_duration);
+      $('.alert').css('opacity','1'); 
       currentTable = "n";
     });
 
     $("#inprogress_btn").click(function(){
       window.slider.slide(1, slide_duration);
+      $('.alert').css('opacity','1'); 
       currentTable = "ip";
     });
 
     $("#completed_btn").click(function(){ 
       window.slider.slide(2, slide_duration);
+      $('.alert').css('opacity','1'); 
       currentTable = "c";
     });
 }
@@ -346,7 +385,7 @@ $('#false-positive').click(function(){
     var updateObj = {_id : selectedAlertData[0]._id, state : "false-positive"};
     updateAlert(updateObj);
     //then update state of user
-    updateUser({state:"clear"})
+    updateUser({_id: user._id,state:"clear"})
     // remove DOM object
     lastSelectedAlert.hide();
     lastSelectedAlert.remove();
@@ -364,3 +403,78 @@ function clearSelectedAlert(){
         $('#note').val("");
 }
 
+
+$('#note').on('keyup paste',function(){  
+    if(!noteChanged){
+        if($(this).val() != user.note){
+            noteChanged = true;
+            changes["note"] = 0;
+            updateChangeList();            
+        }
+    }
+})
+
+/* Control -S */
+/* CTRL-S Shortcut */
+var ctrl_down = false;
+var ctrl_key = 17;
+var s_key = 83;
+
+$(document).keydown(function(e) {
+    if (e.keyCode == ctrl_key) ctrl_down = true;
+}).keyup(function(e) {
+    if (e.keyCode == ctrl_key) ctrl_down = false;
+});
+
+$(document).keydown(function(e) {
+    if (ctrl_down && (e.keyCode == s_key)) {
+        if(Object.keys(changes).length > 0){
+            submitChanges();
+        }
+        return false;
+    }
+}); 
+
+var changeList = $('#change-list ul');
+
+function updateChangeList(){
+
+    if(changeList.is(':hidden')){
+        changeList.show();
+    }
+    
+    changeList.children().remove();
+    for(item in changes){
+        if(item == "note")
+            changeList.append('<li>' + item + ": " + "edited" + '</li>');
+        else{
+            var msg  = "<br> " + currentuser[item] +  " > "  + changes[item];
+            changeList.append('<br><li>' + item + ": " + msg + '</li>');
+        }
+    } 
+}
+
+function submitChanges(){
+
+    
+    if(noteChanged){
+    user.note = $('#note').val();
+    changes.note = user.note;
+    changes._id = user._id;
+    }
+        
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "users/updateOne",
+        data: JSON.stringify(changes),
+        dataType: 'json',
+        success: function(data){
+            // notification();
+            // resetChangeList();
+        },
+        error: function(e){
+            alert("ERROR: " + e);
+        }
+    });
+}

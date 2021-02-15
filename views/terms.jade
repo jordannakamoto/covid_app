@@ -3,36 +3,40 @@ block css
         link(rel='stylesheet', href='/stylesheets/terms.css')
 
 block content
-    #header
-      img(src="https://making-waves.org/wp-content/uploads/2017/07/MakingWavesAcademy_boldtypea-289x300.jpg")
-    h3#title COVID-19 Health Screening Acknowlegment
+    #splash
+        span Logging In
+        img(src = 'http://thebroadstage.org/images/ajax-loader.gif')
+    #agreement
+        #header
+          img(src="/images/thrmlogo.png")
+        h3#title COVID-19 Health Screening Acknowlegment
 
-    p
-      | I understand that the COVID-19 health screening is a 
-      span.inline-bold-underline daily requirement
-      |  and must be completed prior to reporting to campus.
+        p
+          | I understand that the COVID-19 health screening is a 
+          span.inline-bold-underline daily requirement
+          |  and must be completed prior to reporting to campus.
 
-    p 
-      | If at any point I develop any COVID-19 symptoms or believe that I have been exposed to COVID-19 I will not report to MWA for work, and will properly notify Human Resources (HR) as detailed below.
-      span.inline-bold-italic   I will not return to campus until I receive confirmation from HR that I have satisfied the standard quarantine/isolation period. Note: Standard CDC timeframe is 10-days to return to work for close contacts or cases. 
-      | 
+        p 
+          | If at any point I develop any COVID-19 symptoms or believe that I have been exposed to COVID-19 I will not report to MWA for work, and will properly notify Human Resources (HR) as detailed below.
+          span.inline-bold-italic   I will not return to campus until I receive confirmation from HR that I have satisfied the standard quarantine/isolation period. Note: Standard CDC timeframe is 10-days to return to work for close contacts or cases. 
+          | 
 
 
-    p   Failure to follow these guidelines creates a health and safety risk to you and your fellow MWA staff and students. If you have any questions regarding COVID-19 including symptoms or screening questions please refer to the 
-      a(href="/") CDC
-      |  for more information. 
+        p   Failure to follow these guidelines creates a health and safety risk to you and your fellow MWA staff and students. If you have any questions regarding COVID-19 including symptoms or screening questions please refer to the 
+          a(href="/") CDC
+          |  for more information. 
 
-    p By completing this acknowledgment, you agree to have answered the questions honestly. Any employee who has falsified this information will be subject to disciplinary action. You also acknowledge that if at any time, you begin to exhibit symptoms before or during your shift, you are 
-      span.inline-bold-underline required
-      |  to notify HR and your supervisor immediately.
-    p For support, email 
-      a(href="humanresources@mwacademy.org") humanresources@mwacademy.org
-      |  or phone 510-426-1765.
-      #legal
-        p(style="font-size: 11px; color: grey; margin-top: 6em") 1. Electronic Signature Agreement. By selecting the "Acknowledge and Continue" button, you are signing this Agreement electronically. You agree your electronic signature is the legal equivalent of your manual signature on this Agreement. By selecting "Acknowledge and Continue" you consent to be legally bound by this Agreement's terms and conditions.
-      
-    #button-area
-        button#continue-btn(onClick="location.href='../activate'") Acknowledge and Continue
-      
+        p By completing this acknowledgment, you agree to have answered the questions honestly. Any employee who has falsified this information will be subject to disciplinary action. You also acknowledge that if at any time, you begin to exhibit symptoms before or during your shift, you are 
+          span.inline-bold-underline required
+          |  to notify HR and your supervisor immediately.
+        p For support, email 
+          a(href="support@thehrmanager.com") support@thehrmanager.com
+          |  or phone 111-111-1111.
+          #legal
+            p(style="font-size: 11px; color: grey; margin-top: 6em") 1. Electronic Signature Agreement. By selecting the "Acknowledge and Continue" button, you are signing this Agreement electronically. You agree your electronic signature is the legal equivalent of your manual signature on this Agreement. By selecting "Acknowledge and Continue" you consent to be legally bound by this Agreement's terms and conditions.
+          
+        #button-area
+            button#continue-btn(onClick="location.href='../activate'") Acknowledge and Continue
+          
 block scripts       
     script(type='text/javascript' src='/javascripts/terms.js')

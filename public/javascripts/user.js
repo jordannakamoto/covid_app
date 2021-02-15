@@ -101,7 +101,6 @@ $( "#search-input" ).keyup(function(event) {
     
     // if enter is pressed
     if(keycode == '13') {
-        console.log(searchIndex);
         if(searchIndex["First"].length > 0 || searchIndex["Last"].length > 0){
             $('#search-results li').eq(0).addClass("results-hovered");
             if(searchIndex["First"].length > 0 ){
@@ -138,6 +137,17 @@ $( "#search-input" ).keyup(function(event) {
             updateAutoComplete("clear");
             isPopulated = false;
         }
+        else if(isPopulated){
+            $('#search-results ul li').each(function(){
+                console.log(searchQuery);
+                if(!$(this).text().toLowerCase().includes(searchQuery)){
+                    $(this).hide();
+                }
+                else
+                    $(this).show();
+                
+            })
+        }
     }, 0);
    
     
@@ -171,13 +181,18 @@ $( "#search-input" ).keyup(function(event) {
         
         for(const user in searchIndex["First"]){
                 var nameStr = searchIndex["First"][user].name.First + " " + searchIndex["First"][user].name.Last;
-                AC_field.append('<li>' + nameStr +  '</li>');
+                AC_field.append('<li data-id="'+searchIndex["First"][user]._id+'">' + nameStr +  '</li>');
         }
+        
         
         for(const user in searchIndex["Last"]){
                 var nameStr = searchIndex["Last"][user].name.First + " " + searchIndex["Last"][user].name.Last;
-                AC_field.append('<li>' + nameStr +  '</li>');
+                AC_field.append('<li data-id="'+searchIndex["Last"][user]._id+'"+>' + nameStr +  '</li>');
         }
+        
+        AC_field.children().click(function(e){
+            updateCard(e.target.attributes.getNamedItem('data-id').value); openProfile()
+        })
     }
 });
 
@@ -215,6 +230,7 @@ function updateCard(userid){
         
      function drawCard(user){
          currentuser = user; 
+         $('#alert-history ul').children().remove();
          
          //Populate DOM
          $('#fullname').text(currentuser.name.First + " " + currentuser.name.Last);
@@ -246,7 +262,16 @@ function updateCard(userid){
          $('#field_username').text(currentuser.username);
          $('#field_key').text(currentuser.key);
          
-         $('#note').val(currentuser.note);         
+         $('#note').val(currentuser.note);
+
+            for(item in currentuser.alerts){
+                if(currentuser.alerts[item].state == "new")
+                    $('#alert-history ul').append("<li class='alert-urgent'>"+currentuser.alerts[item].msg+ " - " +currentuser.alerts[item].date+"</li>")
+                else if(currentuser.alerts[item].state == "false-positive"){}
+                else
+                    $('#alert-history ul').append("<li>"+currentuser.alerts[item].msg+ " - " +currentuser.alerts[item].date+"</li>")
+            }
+         
          // if doc? load doc link
      }
 }
